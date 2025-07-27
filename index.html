@@ -61,9 +61,9 @@
         </div>
         <div class="about-image">
           <div class="image-slider">
-            <img src="assets/images/foto1.jpg" alt="Nossa Equipe" class="slide active">
-            <img src="assets/images/foto2.jpg" alt="Nosso Escritório" class="slide">
-            <img src="assets/images/foto3.jpg" alt="Nossos Projetos" class="slide">
+            <img src="assets/images/inicial.jpg" alt="Nossa Equipe" class="slide active">
+            <img src="assets/images/2.webp" alt="Nosso Escritório" class="slide">
+            <img src="assets/images/3.webp" alt="Nossos Projetos" class="slide">
             <div class="slider-controls">
               <button class="prev" onclick="changeSlide(-1)">❮</button>
               <button class="next" onclick="changeSlide(1)">❯</button>
@@ -117,109 +117,184 @@
     <div class="container">
       <h2 class="section-title">Galeria</h2>
 
-      <!-- Galeria Aqui -->
-      <div id="galeria-instagram-style">
-        <div class="galeria">
-          <img src="assets/images/foto1.jpg" alt="Imagem 1">
-          <img src="assets/images/foto2.jpg" alt="Imagem 2">
-          <img src="assets/images/foto3.jpg" alt="Imagem 3">
-        </div>
+    <!-- Galeria / Carrossel com miniaturas -->
+<div id="galeria-carousel" class="carousel-container">
+  <div class="carousel-track">
+    <img src="assets/images/foto1.jpg" alt="Imagem 1" onclick="abrirModal(this.src)">
+    <img src="assets/images/foto2.jpg" alt="Imagem 2" onclick="abrirModal(this.src)">
+    <img src="assets/images/foto3.jpg" alt="Imagem 3" onclick="abrirModal(this.src)">
+  </div>
+  
 
-        <div class="modal" id="zoomModal">
-          <span class="fechar" onclick="fecharModal()">&times;</span>
-          <img class="modal-conteudo" id="imagemExpandida">
-        </div>
-      </div>
+  <!-- Miniaturas -->
+  <div class="carousel-thumbnails">
+    <img src="assets/images/foto1.jpg" onclick="selecionarSlide(0)">
+    <img src="assets/images/foto2.jpg" onclick="selecionarSlide(1)">
+    <img src="assets/images/foto3.jpg" onclick="selecionarSlide(2)">
+  </div>
+</div>
 
-      <!-- Estilo da galeria -->
-      <style>
-        #galeria-instagram-style {
-          max-width: 800px;
-          margin: 40px auto;
-        }
+<!-- Modal de Zoom -->
+<div class="modal" id="zoomModal">
+  <span class="fechar" onclick="fecharModal()">&times;</span>
+  <img class="modal-conteudo" id="imagemExpandida">
+</div>
 
-        .galeria {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-          gap: 10px;
-        }
+<style>
+  .carousel-container {
+  position: relative;
+  max-width: 800px;
+  margin: 40px auto;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
 
-        .galeria img {
-          width: 100%;
-          height: auto;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: transform 0.3s;
-        }
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: max-content;
+}
 
-        .galeria img:hover {
-          transform: scale(1.05);
-        }
+.carousel-track img {
+  min-width: 100%;
+  max-width: 100%;
+  height: 400px; /* ALTURA FIXA */
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 12px;
+}
 
-        .modal {
-          display: none;
-          position: fixed;
-          z-index: 999;
-          padding-top: 60px;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          overflow: auto;
-          background-color: rgba(0,0,0,0.9);
-        }
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.4);
+  border: none;
+  color: white;
+  font-size: 30px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+.carousel-btn:hover {
+  background-color: rgba(0,0,0,0.7);
+}
+.carousel-btn.prev {
+  left: 10px;
+}
+.carousel-btn.next {
+  right: 10px;
+}
 
-        .modal-conteudo {
-          margin: auto;
-          display: block;
-          max-width: 90%;
-          max-height: 80%;
-          animation: zoom 0.3s;
-        }
+/* Miniaturas */
+.carousel-thumbnails {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.carousel-thumbnails img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+.carousel-thumbnails img:hover {
+  opacity: 1;
+}
 
-        @keyframes zoom {
-          from {transform: scale(0.7)}
-          to {transform: scale(1)}
-        }
+/* Modal de Zoom */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.9);
+}
+.modal-conteudo {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 80%;
+  animation: zoom 0.3s;
+}
+@keyframes zoom {
+  from {transform: scale(0.7)}
+  to {transform: scale(1)}
+}
+.fechar {
+  position: absolute;
+  top: 30px;
+  right: 45px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.fechar:hover {
+  color: #bbb;
+}
 
-        .fechar {
-          position: absolute;
-          top: 30px;
-          right: 45px;
-          color: #fff;
-          font-size: 40px;
-          font-weight: bold;
-          cursor: pointer;
-        }
+</style>
 
-        .fechar:hover {
-          color: #bbb;
-        }
-      </style>
+<script>
+  let slideIndex = 0;
+const track = document.querySelector('.carousel-track');
+const slides = document.querySelectorAll('.carousel-track img');
+const totalSlides = slides.length;
 
-      <!-- Script da galeria -->
-      <script>
-        const imagens = document.querySelectorAll('.galeria img');
-        const modal = document.getElementById('zoomModal');
-        const imagemExpandida = document.getElementById('imagemExpandida');
+function moverSlide(direction) {
+  slideIndex += direction;
+  if (slideIndex < 0) slideIndex = totalSlides - 1;
+  if (slideIndex >= totalSlides) slideIndex = 0;
+  atualizarSlide();
+}
 
-        imagens.forEach(img => {
-          img.addEventListener('click', () => {
-            modal.style.display = 'block';
-            imagemExpandida.src = img.src;
-          });
-        });
+function selecionarSlide(index) {
+  slideIndex = index;
+  atualizarSlide();
+}
 
-        function fecharModal() {
-          modal.style.display = 'none';
-        }
+function atualizarSlide() {
+  const offset = slideIndex * -100;
+  track.style.transform = `translateX(${offset}%)`;
+}
 
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        }
-      </script>
+// Autoplay
+setInterval(() => {
+  moverSlide(1);
+}, 5000);
+
+// Modal de zoom
+function abrirModal(src) {
+  const modal = document.getElementById('zoomModal');
+  const imagemExpandida = document.getElementById('imagemExpandida');
+  modal.style.display = 'block';
+  imagemExpandida.src = src;
+}
+function fecharModal() {
+  document.getElementById('zoomModal').style.display = 'none';
+}
+window.onclick = function(event) {
+  const modal = document.getElementById('zoomModal');
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+</script>
+
     </div>
   </section>
 
