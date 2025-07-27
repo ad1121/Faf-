@@ -1,276 +1,256 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal FAFÁ</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal FAFÁ</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <h2>Portal Fafá</h2>
-                </div>
-                <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="#home" class="nav-link">Início</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#about" class="nav-link">Sobre</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#services" class="nav-link">Serviços</a>
-                    <li class="nav-item">
-                        <a href="#contact" class="nav-link">Galeria</a>
-                    </li>
-                </ul>
-                <div class="hamburger">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Bem-vindo ao cantinho Fafá Bolos</h1>
-            <p class="hero-description">Sua encomenda a poucos click´s</p>
-            <button class="cta-button" onclick="scrollToSection('services')">Faça seu pedido!</button>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <h2>Portal Fafá</h2>
         </div>
-        <div class="hero-animation">
-            <div class="floating-shapes">
-                <div class="shape shape-1"></div>
-                <div class="shape shape-2"></div>
-                <div class="shape shape-3"></div>
-            </div>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="#home" class="nav-link">Início</a></li>
+          <li class="nav-item"><a href="#about" class="nav-link">Sobre</a></li>
+          <li class="nav-item"><a href="#services" class="nav-link">Serviços</a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link">Galeria</a></li>
+        </ul>
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
         </div>
-    </section>
+      </div>
+    </nav>
+  </header>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">Sobre Nós</h2>
-            <div class="about-grid">
-                <div class="about-content">
-                    <h3>Com carinho e sabor em cada fatia!</h3>
-                    <p>Especializada em criar bolos frescos e deliciosos, preparados com os melhores ingredientes e muito amor.</p>
-                    <div class="features">
-                        <div class="feature">
-                            <div class="feature-icon">🎂</div>
-                            <h4> Tradição de fazer bolos com amor!</h4>
-                        </div>
-                        <div class="feature">
-                            <div class="feature-icon">🥳</div>
-                            <h4>Criando lembranças!</h4>
-                        </div>
-                        <div class="feature">
-                            <div class="feature-icon">🎁</div>
-                            <h4>O bolo perfeito feito para você!</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-image">
-                    <div class="image-slider">
-                        <img src="assets/images/foto1.jpg" alt="Nossa Equipe" class="slide active">
-                        <img src="assets/images/foto2.jpg" alt="Nosso Escritório" class="slide">
-                        <img src="assets/images/foto3.jpg" alt="Nossos Projetos" class="slide">
-                        <div class="slider-controls">
-                            <button class="prev" onclick="changeSlide(-1)">❮</button>
-                            <button class="next" onclick="changeSlide(1)">❯</button>
-                        </div>
-                        <div class="slider-indicators">
-                            <span class="indicator active" onclick="currentSlide(1)"></span>
-                            <span class="indicator" onclick="currentSlide(2)"></span>
-                            <span class="indicator" onclick="currentSlide(3)"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Bem-vindo ao cantinho Fafá Bolos</h1>
+      <p class="hero-description">Sua encomenda a poucos click´s</p>
+      <button class="cta-button" onclick="scrollToSection('services')">Faça seu pedido!</button>
+    </div>
+    <div class="hero-animation">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <div class="container">
+      <h2 class="section-title">Sobre Nós</h2>
+      <div class="about-grid">
+        <div class="about-content">
+          <h3>Com carinho e sabor em cada fatia!</h3>
+          <p>Especializada em criar bolos frescos e deliciosos, preparados com os melhores ingredientes e muito amor.</p>
+          <div class="features">
+            <div class="feature"><div class="feature-icon">🎂</div><h4> Tradição de fazer bolos com amor!</h4></div>
+            <div class="feature"><div class="feature-icon">🥳</div><h4>Criando lembranças!</h4></div>
+            <div class="feature"><div class="feature-icon">🎁</div><h4>O bolo perfeito feito para você!</h4></div>
+          </div>
         </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">Nossos Serviços</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">🎂</div>
-                    <h3>Bolos Personalizados para Qualquer Ocasião</h3>
-                    <p>Oferecemos uma variedade de bolos personalizados para casamentos, aniversários, festas corporativas, entre outros eventos. Cada bolo é elaborado com detalhes exclusivos para refletir a sua celebração.</p>
-                    <button class="service-btn">Efetuar Pedido</button>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🍫</div>
-                    <h3>Deliciosas Sobremesas para Encantar Seu Paladar</h3>
-                    <p>Além dos bolos, oferecemos uma gama de sobremesas irresistíveis, como cupcakes, brigadeiros e tortas que são perfeitas para qualquer tipo de evento. Nossos produtos são feitos com os melhores ingredientes para garantir um sabor único.</p>
-                    <button class="service-btn">Efetuar Pedido</button>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">💒</div>
-                    <h3>Bolos para Casamentos, Aniversários e Eventos Corporativos</h3>
-                    <p>Seja para uma festa íntima ou um grande evento, temos bolos que atendem às suas necessidades. Nossa equipe ajuda a criar a sobremesa ideal para o seu dia especial, com sabores e decorações que impressionam.</p>
-                    <button class="service-btn">Efetuar Pedido</button>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">💡</div>
-                    <h3>Bolos Criativos e Saborosos com Entrega Personalizada</h3>
-                    <p>Entregamos bolos personalizados diretamente no seu evento, garantindo que cada detalhe seja perfeito. Do design à qualidade, nossos bolos são feitos sob medida para fazer seu evento brilhar.</p>
-                    <button class="service-btn">Efetuar Pedido</button>
-                </div>
+        <div class="about-image">
+          <div class="image-slider">
+            <img src="assets/images/inicial.jpg" alt="Nossa Equipe" class="slide active">
+            <img src="assets/images/2.webp" alt="Nosso Escritório" class="slide">
+            <img src="assets/images/3.webp" alt="Nossos Projetos" class="slide">
+            <div class="slider-controls">
+              <button class="prev" onclick="changeSlide(-1)">❮</button>
+              <button class="next" onclick="changeSlide(1)">❯</button>
             </div>
-        </div>
-    </section>
-
-   <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Galeria</h2>
-            
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div id="galeria-instagram-style">
-  <!-- Galeria de imagens -->
-  <div class="galeria">
-    <img src="assets/images/foto1.jpg" alt="Imagem 1">
-    <img src="assets/images/foto2.jpg" alt="Imagem 2">
-    <img src="assets/images/foto3.jpg" alt="Imagem 3">
-    <!-- Adicione mais imagens aqui -->
-  </div>
-
-  <!-- Modal para zoom -->
-  <div class="modal" id="zoomModal">
-    <span class="fechar" onclick="fecharModal()">&times;</span>
-    <img class="modal-conteudo" id="imagemExpandida">
-  </div>
-</div>
-
-<style>
-  #galeria-instagram-style {
-    max-width: 800px;
-    margin: auto;
-  }
-
-  .galeria {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-  }
-
-  .galeria img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-
-  .galeria img:hover {
-    transform: scale(1.05);
-  }
-
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    padding-top: 60px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.9);
-  }
-
-  .modal-conteudo {
-    margin: auto;
-    display: block;
-    max-width: 90%;
-    max-height: 80%;
-    animation: zoom 0.3s;
-  }
-
-  @keyframes zoom {
-    from {transform: scale(0.7)}
-    to {transform: scale(1)}
-  }
-
-  .fechar {
-    position: absolute;
-    top: 30px;
-    right: 45px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .fechar:hover {
-    color: #bbb;
-  }
-</style>
-
-<script>
-  const imagens = document.querySelectorAll('.galeria img');
-  const modal = document.getElementById('zoomModal');
-  const imagemExpandida = document.getElementById('imagemExpandida');
-
-  imagens.forEach(img => {
-    img.addEventListener('click', () => {
-      modal.style.display = 'block';
-      imagemExpandida.src = img.src;
-    });
-  });
-
-  function fecharModal() {
-    modal.style.display = 'none';
-  }
-
-  // Fechar o modal clicando fora da imagem
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-</script>
-
-                </div>
-                <div class="footer-section">
-                    <h4>Links Rápidos</h4>
-                    <ul>
-                        <li><a href="#home">Início</a></li>
-                        <li><a href="#about">Sobre</a></li>
-                        <li><a href="#services">Serviços</a></li>
-                        <li><a href="#contact">Contato</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Redes Sociais</h4>
-                    <div class="social-links">
-                        <a href="#" class="social-link">Facebook</a>
-                        <a href="#" class="social-link">Instagram</a>
-                        <a href="#" class="social-link">LinkedIn</a>
-                    </div>
-                </div>
+            <div class="slider-indicators">
+              <span class="indicator active" onclick="currentSlide(1)"></span>
+              <span class="indicator" onclick="currentSlide(2)"></span>
+              <span class="indicator" onclick="currentSlide(3)"></span>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Portal Web. Todos os direitos reservados.</p>
-            </div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
+  <!-- Services Section -->
+  <section id="services" class="services">
+    <div class="container">
+      <h2 class="section-title">Nossos Serviços</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🎂</div>
+          <h3>Bolos Personalizados para Qualquer Ocasião</h3>
+          <p>Oferecemos uma variedade de bolos personalizados para casamentos, aniversários, festas corporativas, entre outros eventos. Cada bolo é elaborado com detalhes exclusivos para refletir a sua celebração.</p>
+          <button class="service-btn">Efetuar Pedido</button>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🍫</div>
+          <h3>Deliciosas Sobremesas para Encantar Seu Paladar</h3>
+          <p>Além dos bolos, oferecemos uma gama de sobremesas irresistíveis, como cupcakes, brigadeiros e tortas que são perfeitas para qualquer tipo de evento.</p>
+          <button class="service-btn">Efetuar Pedido</button>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💒</div>
+          <h3>Bolos para Casamentos, Aniversários e Eventos Corporativos</h3>
+          <p>Temos bolos que atendem às suas necessidades. Nossa equipe ajuda a criar a sobremesa ideal com sabores e decorações que impressionam.</p>
+          <button class="service-btn">Efetuar Pedido</button>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💡</div>
+          <h3>Bolos Criativos e Saborosos com Entrega Personalizada</h3>
+          <p>Entregamos bolos personalizados diretamente no seu evento. Do design à qualidade, tudo sob medida para fazer seu evento brilhar.</p>
+          <button class="service-btn">Efetuar Pedido</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact / Galeria Section -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2 class="section-title">Galeria</h2>
+
+      <!-- Galeria Aqui -->
+      <div id="galeria-instagram-style">
+        <div class="galeria">
+          <img src="assets/images/foto1.jpg" alt="Imagem 1">
+          <img src="assets/images/foto2.jpg" alt="Imagem 2">
+          <img src="assets/images/foto3.jpg" alt="Imagem 3">
+        </div>
+
+        <div class="modal" id="zoomModal">
+          <span class="fechar" onclick="fecharModal()">&times;</span>
+          <img class="modal-conteudo" id="imagemExpandida">
+        </div>
+      </div>
+
+      <!-- Estilo da galeria -->
+      <style>
+        #galeria-instagram-style {
+          max-width: 800px;
+          margin: 40px auto;
+        }
+
+        .galeria {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          gap: 10px;
+        }
+
+        .galeria img {
+          width: 100%;
+          height: auto;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: transform 0.3s;
+        }
+
+        .galeria img:hover {
+          transform: scale(1.05);
+        }
+
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 999;
+          padding-top: 60px;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-conteudo {
+          margin: auto;
+          display: block;
+          max-width: 90%;
+          max-height: 80%;
+          animation: zoom 0.3s;
+        }
+
+        @keyframes zoom {
+          from {transform: scale(0.7)}
+          to {transform: scale(1)}
+        }
+
+        .fechar {
+          position: absolute;
+          top: 30px;
+          right: 45px;
+          color: #fff;
+          font-size: 40px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .fechar:hover {
+          color: #bbb;
+        }
+      </style>
+
+      <!-- Script da galeria -->
+      <script>
+        const imagens = document.querySelectorAll('.galeria img');
+        const modal = document.getElementById('zoomModal');
+        const imagemExpandida = document.getElementById('imagemExpandida');
+
+        imagens.forEach(img => {
+          img.addEventListener('click', () => {
+            modal.style.display = 'block';
+            imagemExpandida.src = img.src;
+          });
+        });
+
+        function fecharModal() {
+          modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      </script>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Links Rápidos</h4>
+          <ul>
+            <li><a href="#home">Início</a></li>
+            <li><a href="#about">Sobre</a></li>
+            <li><a href="#services">Serviços</a></li>
+            <li><a href="#contact">Galeria</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Redes Sociais</h4>
+          <div class="social-links">
+            <a href="#" class="social-link">Facebook</a>
+            <a href="#" class="social-link">Instagram</a>
+            <a href="#" class="social-link">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Portal Web. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
