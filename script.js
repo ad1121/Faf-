@@ -204,19 +204,7 @@ document.querySelectorAll('.service-btn').forEach(button => {
 });
 
 
-// Add loading animation to buttons
-document.querySelectorAll('button').forEach(button => {
-    button.addEventListener('click', function() {
-        this.disabled = true;
-        this.textContent = 'Processando...';
-        this.disabled = true;
-        
-        setTimeout(() => {
-            this.textContent = originalText;
-            this.disabled = false;
-        }, 500);
-    });
-});
+
 
 // Parallax effect for hero section
 window.addEventListener('scroll', () => {
