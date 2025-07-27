@@ -207,8 +207,6 @@ document.querySelectorAll('.service-btn').forEach(button => {
 // Add loading animation to buttons
 document.querySelectorAll('button').forEach(button => {
     button.addEventListener('click', function() {
-        const originalText = this.textContent;
-        this.textContent = 'Processando...';
         this.disabled = true;
         
         setTimeout(() => {
