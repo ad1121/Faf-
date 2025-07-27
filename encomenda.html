@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encomendar Bolo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #3F5EFB 0%, #FC466B 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            border-radius: 2px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-card {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card input[type="radio"] {
+            display: none;
+        }
+
+        .option-label {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            color: #495057;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            opacity: 0.1;
+            transition: left 0.3s ease;
+        }
+
+        .option-card:hover .option-label {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card input[type="radio"]:checked + .option-label {
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(63, 94, 251, 0.3);
+        }
+
+        .option-card input[type="radio"]:checked + .option-label::before {
+            left: 0;
+        }
+
+        .datetime-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .input-group input[type="date"],
+        .input-group input[type="time"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .input-group input[type="date"]:focus,
+        .input-group input[type="time"]:focus {
+            outline: none;
+            border-color: #3F5EFB;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(63, 94, 251, 0.1);
+        }
+
+        .addon-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px dashed #dee2e6;
+        }
+
+        .addon-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .addon-option:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .addon-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            accent-color: #3F5EFB;
+        }
+
+        .addon-info {
+            flex: 1;
+        }
+
+        .addon-name {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .addon-price {
+            color: #FC466B;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FC466B, #3F5EFB);
+            transition: left 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(63, 94, 251, 0.4);
+        }
+
+        .submit-btn:hover::before {
+            left: 0;
+        }
+
+        .submit-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .datetime-group {
+                grid-template-columns: 1fr;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .addon-option {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            .addon-option input[type="checkbox"] {
+                margin-bottom: 10px;
+            }
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="back-btn" onclick="history.back()">
+        ← Voltar
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎂 Encomendar Bolo</h1>
+            <p>Personalize seu bolo dos sonhos</p>
+        </div>
+
+        <form id="orderForm">
+            <!-- Massa do Bolo -->
+            <div class="form-section">
+                <h3 class="section-title">Massa do Bolo <span class="required">*</span></h3>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <input type="radio" id="massa1" name="massa" value="Chocolate" required>
+                        <label for="massa1" class="option-label">🍫 Chocolate</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="massa2" name="massa" value="Baunilha" required>
+                        <label for="massa2" class="option-label">🌟 Baunilha</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="massa3" name="massa" value="Morango" required>
+                        <label for="massa3" class="option-label">🍓 Morango</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="massa4" name="massa" value="Red Velvet" required>
+                        <label for="massa4" class="option-label">❤️ Red Velvet</label>
+                    </div>
+                </div>
+                <div class="error-message" id="massaError">Por favor, selecione uma massa.</div>
+            </div>
+
+            <!-- Recheio -->
+            <div class="form-section">
+                <h3 class="section-title">Recheio <span class="required">*</span></h3>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <input type="radio" id="recheio1" name="recheio" value="Brigadeiro" required>
+                        <label for="recheio1" class="option-label">🍫 Brigadeiro</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="recheio2" name="recheio" value="Doce de Leite" required>
+                        <label for="recheio2" class="option-label">🥛 Doce de Leite</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="recheio3" name="recheio" value="Mousse de Maracujá" required>
+                        <label for="recheio3" class="option-label">🥭 Mousse de Maracujá</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="recheio4" name="recheio" value="Creme de Ninho" required>
+                        <label for="recheio4" class="option-label">🥥 Creme de Ninho</label>
+                    </div>
+                </div>
+                <div class="error-message" id="recheioError">Por favor, selecione um recheio.</div>
+            </div>
+
+            <!-- Cobertura -->
+            <div class="form-section">
+                <h3 class="section-title">Cobertura <span class="required">*</span></h3>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <input type="radio" id="cobertura1" name="cobertura" value="Chantilly" required>
+                        <label for="cobertura1" class="option-label">☁️ Chantilly</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="cobertura2" name="cobertura" value="Ganache" required>
+                        <label for="cobertura2" class="option-label">🍫 Ganache</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="cobertura3" name="cobertura" value="Buttercream" required>
+                        <label for="cobertura3" class="option-label">🧁 Buttercream</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="cobertura4" name="cobertura" value="Pasta Americana" required>
+                        <label for="cobertura4" class="option-label">🎨 Pasta Americana</label>
+                    </div>
+                </div>
+                <div class="error-message" id="coberturaError">Por favor, selecione uma cobertura.</div>
+            </div>
+
+            <!-- Data e Horário -->
+            <div class="form-section">
+                <h3 class="section-title">Data e Horário para Retirada <span class="required">*</span></h3>
+                <div class="datetime-group">
+                    <div class="input-group">
+                        <label for="data">Data de Retirada</label>
+                        <input type="date" id="data" name="data" required>
+                        <div class="error-message" id="dataError">Por favor, selecione uma data.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="horario">Horário</label>
+                        <input type="time" id="horario" name="horario" required>
+                        <div class="error-message" id="horarioError">Por favor, selecione um horário.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adicionais -->
+            <div class="form-section">
+                <h3 class="section-title">Adicionais</h3>
+                <div class="addon-section">
+                    <div class="addon-option">
+                        <input type="checkbox" id="topo1" name="adicionais" value="Topo Personalizado - R$ 25,00">
+                        <div class="addon-info">
+                            <div class="addon-name">🎯 Topo Personalizado</div>
+                            <small>Nome ou frase personalizada</small>
+                        </div>
+                        <div class="addon-price">+R$ 25,00</div>
+                    </div>
+                    <div class="addon-option">
+                        <input type="checkbox" id="topo2" name="adicionais" value="Topo de Aniversário - R$ 15,00">
+                        <div class="addon-info">
+                            <div class="addon-name">🎉 Topo de Aniversário</div>
+                            <small>Topo decorativo padrão</small>
+                        </div>
+                        <div class="addon-price">+R$ 15,00</div>
+                    </div>
+                    <div class="addon-option">
+                        <input type="checkbox" id="topo3" name="adicionais" value="Velas Especiais - R$ 10,00">
+                        <div class="addon-info">
+                            <div class="addon-name">🕯️ Velas Especiais</div>
+                            <small>Velas coloridas ou temáticas</small>
+                        </div>
+                        <div class="addon-price">+R$ 10,00</div>
+                    </div>
+                    <div class="addon-option">
+                        <input type="checkbox" id="topo4" name="adicionais" value="Decoração Extra - R$ 30,00">
+                        <div class="addon-info">
+                            <div class="addon-name">✨ Decoração Extra</div>
+                            <small>Flores, frutas ou confeitos</small>
+                        </div>
+                        <div class="addon-price">+R$ 30,00</div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span>📱 Solicitar Pedido via WhatsApp</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Definir data mínima como hoje
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('data').setAttribute('min', today);
+
+        // Número do WhatsApp (substitua pelo seu número)
+        const WHATSAPP_NUMBER = '5561991813043'; // Coloque seu número aqui
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validação
+            if (!validateForm()) {
+                return;
+            }
+
+            // Coletar dados do formulário
+            const formData = new FormData(this);
+            const massa = formData.get('massa');
+            const recheio = formData.get('recheio');
+            const cobertura = formData.get('cobertura');
+            const data = formData.get('data');
+            const horario = formData.get('horario');
+            
+            // Coletar adicionais selecionados
+            const adicionais = [];
+            const checkboxes = document.querySelectorAll('input[name="adicionais"]:checked');
+            checkboxes.forEach(checkbox => {
+                adicionais.push(checkbox.value);
+            });
+
+            // Formatear data
+            const dataFormatada = new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
+            
+            // Criar mensagem para WhatsApp
+            let mensagem = `🎂 *PEDIDO DE BOLO*\n\n`;
+            mensagem += `📋 *Detalhes do Pedido:*\n`;
+            mensagem += `• Massa: ${massa}\n`;
+            mensagem += `• Recheio: ${recheio}\n`;
+            mensagem += `• Cobertura: ${cobertura}\n\n`;
+            mensagem += `📅 *Retirada:*\n`;
+            mensagem += `• Data: ${dataFormatada}\n`;
+            mensagem += `• Horário: ${horario}\n\n`;
+            
+            if (adicionais.length > 0) {
+                mensagem += `✨ *Adicionais:*\n`;
+                adicionais.forEach(adicional => {
+                    mensagem += `• ${adicional}\n`;
+                });
+                mensagem += `\n`;
+            }
+            
+            mensagem += `Gostaria de confirmar este pedido! 😊`;
+
+            // Codificar mensagem para URL
+            const mensagemCodificada = encodeURIComponent(mensagem);
+            
+            // Criar link do WhatsApp
+            const linkWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensagemCodificada}`;
+            
+            // Abrir WhatsApp
+            window.open(linkWhatsApp, '_blank');
+        });
+
+        function validateForm() {
+            let isValid = true;
+            
+            // Validar massa
+            if (!document.querySelector('input[name="massa"]:checked')) {
+                document.getElementById('massaError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('massaError').style.display = 'none';
+            }
+            
+            // Validar recheio
+            if (!document.querySelector('input[name="recheio"]:checked')) {
+                document.getElementById('recheioError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('recheioError').style.display = 'none';
+            }
+            
+            // Validar cobertura
+            if (!document.querySelector('input[name="cobertura"]:checked')) {
+                document.getElementById('coberturaError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('coberturaError').style.display = 'none';
+            }
+            
+            // Validar data
+            const data = document.getElementById('data').value;
+            if (!data) {
+                document.getElementById('dataError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('dataError').style.display = 'none';
+            }
+            
+            // Validar horário
+            const horario = document.getElementById('horario').value;
+            if (!horario) {
+                document.getElementById('horarioError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('horarioError').style.display = 'none';
+            }
+            
+            return isValid;
+        }
+
+        // Adicionar animações aos cards quando selecionados
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Remover animação de todos os cards do mesmo grupo
+                const groupName = this.name;
+                document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+                    r.closest('.option-card').classList.remove('selected');
+                });
+                
+                // Adicionar animação ao card selecionado
+                this.closest('.option-card').classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
