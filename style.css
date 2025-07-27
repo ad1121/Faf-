@@ -40,8 +40,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    font-size: 30px; /* Aumente esse valor conforme desejar */
+    
 }
 
 .logo h2 {
