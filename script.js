@@ -208,11 +208,13 @@ document.querySelectorAll('.service-btn').forEach(button => {
 document.querySelectorAll('button').forEach(button => {
     button.addEventListener('click', function() {
         this.disabled = true;
+        this.textContent = 'Processando...';
+        this.disabled = true;
         
         setTimeout(() => {
             this.textContent = originalText;
             this.disabled = false;
-        }, 2000);
+        }, 500);
     });
 });
 
