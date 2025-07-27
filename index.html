@@ -223,6 +223,34 @@
     </div>
   </section>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Links Rápidos</h4>
+          <ul>
+            <li><a href="#home">Início</a></li>
+            <li><a href="#about">Sobre</a></li>
+            <li><a href="#services">Serviços</a></li>
+            <li><a href="#contact">Galeria</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Redes Sociais</h4>
+          <div class="social-links">
+            <a href="#" class="social-link">Facebook</a>
+            <a href="#" class="social-link">Instagram</a>
+            <a href="#" class="social-link">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Portal Web. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
   <style>
     /* Galeria Sofisticada */
     .gallery-container {
@@ -564,34 +592,6 @@
     }
   </style>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>Links Rápidos</h4>
-          <ul>
-            <li><a href="#home">Início</a></li>
-            <li><a href="#about">Sobre</a></li>
-            <li><a href="#services">Serviços</a></li>
-            <li><a href="#contact">Galeria</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Redes Sociais</h4>
-          <div class="social-links">
-            <a href="#" class="social-link">Facebook</a>
-            <a href="#" class="social-link">Instagram</a>
-            <a href="#" class="social-link">LinkedIn</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Portal Web. Todos os direitos reservados.</p>
-      </div>
-    </div>
-  </footer>
-
   <script>
     // Variáveis globais da galeria
     const galleryImages = [
@@ -628,9 +628,6 @@
     ];
 
     let currentModalIndex = 0;
-
-    // Variáveis globais
-    let slideIndex = 0;
     let currentSlideIndex = 1;
 
     // Menu hambúrguer
@@ -823,13 +820,12 @@
       // window.open('https://wa.me/5511999999999?text=Olá, gostaria de fazer um pedido!', '_blank');
     }
 
-    // Event listeners para touch events (melhor para mobile)
+    // Event listeners para dispositivos móveis
     document.addEventListener('DOMContentLoaded', function() {
       // Touch events para os botões
       const buttons = document.querySelectorAll('button, .indicator, .gallery-item');
       buttons.forEach(button => {
         button.addEventListener('touchstart', function(e) {
-          // Não prevenir o comportamento padrão para manter a funcionalidade
           this.style.transform = 'scale(0.95)';
         });
         
@@ -909,6 +905,6 @@
         imageObserver.observe(img);
       });
     }
-  
+  </script>
 </body>
 </html>
