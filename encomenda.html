@@ -133,13 +133,6 @@
             left: 0;
         }
 
-        .datetime-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
         .input-group {
             margin-bottom: 20px;
         }
@@ -151,8 +144,7 @@
             color: #333;
         }
 
-        .input-group input[type="date"],
-        .input-group input[type="time"] {
+        .input-group input[type="date"] {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e9ecef;
@@ -162,8 +154,7 @@
             background: #f8f9fa;
         }
 
-        .input-group input[type="date"]:focus,
-        .input-group input[type="time"]:focus {
+        .input-group input[type="date"]:focus {
             outline: none;
             border-color: #3F5EFB;
             background: white;
@@ -286,10 +277,6 @@
                 font-size: 2rem;
             }
 
-            .datetime-group {
-                grid-template-columns: 1fr;
-            }
-
             .options-grid {
                 grid-template-columns: 1fr;
             }
@@ -303,6 +290,18 @@
             .addon-option input[type="checkbox"] {
                 margin-bottom: 10px;
             }
+
+            .peso-kg {
+                font-size: 1rem;
+            }
+            
+            .peso-preco {
+                font-size: 0.9rem;
+            }
+            
+            .peso-serve {
+                font-size: 0.7rem;
+            }
         }
 
         .error-message {
@@ -314,6 +313,143 @@
 
         .required {
             color: #dc3545;
+        }
+
+        .option-card-checkbox {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .option-card-checkbox .option-label {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            color: #495057;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card-checkbox:hover .option-label {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card-checkbox input[type="checkbox"]:checked + .option-label {
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(63, 94, 251, 0.3);
+        }
+
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: #3F5EFB;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(63, 94, 251, 0.1);
+        }
+
+        .terms-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .terms-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FC466B;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .terms-box p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .terms-box strong {
+            color: #FC466B;
+        }
+
+        .checkbox-terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .checkbox-terms input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: #3F5EFB;
+        }
+
+        .checkbox-terms label {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .peso-info {
+            text-align: center;
+        }
+
+        .peso-kg {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .peso-preco {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #FC466B;
+            margin-bottom: 3px;
+        }
+
+        .peso-serve {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .fruit-additional-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .fruit-additional-info p {
+            margin: 0;
+            color: #856404;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -329,52 +465,155 @@
         </div>
 
         <form id="orderForm">
+            <!-- Peso do Bolo -->
+            <div class="form-section">
+                <h3 class="section-title">Peso do Bolo <span class="required">*</span></h3>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <input type="radio" id="peso1" name="peso" value="1kg - R$ 85,00 (serve 10 pessoas)" required>
+                        <label for="peso1" class="option-label">
+                            <div class="peso-info">
+                                <div class="peso-kg">1kg</div>
+                                <div class="peso-preco">R$ 85,00</div>
+                                <div class="peso-serve">(serve 10 pessoas)</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="peso2" name="peso" value="2kg - R$ 170,00 (serve 20 pessoas)" required>
+                        <label for="peso2" class="option-label">
+                            <div class="peso-info">
+                                <div class="peso-kg">2kg</div>
+                                <div class="peso-preco">R$ 170,00</div>
+                                <div class="peso-serve">(serve 20 pessoas)</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="peso3" name="peso" value="3kg - R$ 255,00 (serve 30 pessoas)" required>
+                        <label for="peso3" class="option-label">
+                            <div class="peso-info">
+                                <div class="peso-kg">3kg</div>
+                                <div class="peso-preco">R$ 255,00</div>
+                                <div class="peso-serve">(serve 30 pessoas)</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="peso4" name="peso" value="4kg - R$ 340,00 (serve 40 pessoas)" required>
+                        <label for="peso4" class="option-label">
+                            <div class="peso-info">
+                                <div class="peso-kg">4kg</div>
+                                <div class="peso-preco">R$ 340,00</div>
+                                <div class="peso-serve">(serve 40 pessoas)</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="peso5" name="peso" value="5kg - R$ 425,00 (serve 50 pessoas)" required>
+                        <label for="peso5" class="option-label">
+                            <div class="peso-info">
+                                <div class="peso-kg">5kg</div>
+                                <div class="peso-preco">R$ 425,00</div>
+                                <div class="peso-serve">(serve 50 pessoas)</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="fruit-additional-info">
+                    <p><strong>🍓 Recheio de fruta:</strong> Adicional de R$ 10,00 (1kg), R$ 20,00 (2kg), R$ 30,00 (3kg), R$ 40,00 (4kg), R$ 50,00 (5kg)</p>
+                </div>
+                <div class="error-message" id="pesoError">Por favor, selecione o peso do bolo.</div>
+            </div>
+
             <!-- Massa do Bolo -->
             <div class="form-section">
                 <h3 class="section-title">Massa do Bolo <span class="required">*</span></h3>
                 <div class="options-grid">
                     <div class="option-card">
-                        <input type="radio" id="massa1" name="massa" value="Chocolate" required>
-                        <label for="massa1" class="option-label">🍫 Chocolate</label>
+                        <input type="radio" id="massa1" name="massa" value="Branca" required>
+                        <label for="massa1" class="option-label">🤍 Branca</label>
                     </div>
                     <div class="option-card">
-                        <input type="radio" id="massa2" name="massa" value="Baunilha" required>
-                        <label for="massa2" class="option-label">🌟 Baunilha</label>
+                        <input type="radio" id="massa2" name="massa" value="Chocolate" required>
+                        <label for="massa2" class="option-label">🍫 Chocolate</label>
                     </div>
                     <div class="option-card">
-                        <input type="radio" id="massa3" name="massa" value="Morango" required>
-                        <label for="massa3" class="option-label">🍓 Morango</label>
+                        <input type="radio" id="massa3" name="massa" value="Outros" required>
+                        <label for="massa3" class="option-label">✨ Outros</label>
                     </div>
-                    <div class="option-card">
-                        <input type="radio" id="massa4" name="massa" value="Red Velvet" required>
-                        <label for="massa4" class="option-label">❤️ Red Velvet</label>
-                    </div>
+                </div>
+                <div class="input-group" id="massaOutrosGroup" style="display: none; margin-top: 15px;">
+                    <label for="massaOutros">Especifique a massa desejada:</label>
+                    <input type="text" id="massaOutros" name="massaOutros" placeholder="Digite o sabor da massa...">
                 </div>
                 <div class="error-message" id="massaError">Por favor, selecione uma massa.</div>
             </div>
 
             <!-- Recheio -->
             <div class="form-section">
-                <h3 class="section-title">Recheio <span class="required">*</span></h3>
+                <h3 class="section-title">Recheio (Máximo 2) <span class="required">*</span></h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9rem;">Selecione até 2 recheios para seu bolo</p>
+                
+                <h4 style="color: #333; margin-bottom: 10px; font-size: 1rem;">Recheios Tradicionais</h4>
                 <div class="options-grid">
-                    <div class="option-card">
-                        <input type="radio" id="recheio1" name="recheio" value="Brigadeiro" required>
-                        <label for="recheio1" class="option-label">🍫 Brigadeiro</label>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio1" name="recheio" value="Prestígio">
+                        <label for="recheio1" class="option-label">🥥 Prestígio</label>
                     </div>
-                    <div class="option-card">
-                        <input type="radio" id="recheio2" name="recheio" value="Doce de Leite" required>
-                        <label for="recheio2" class="option-label">🥛 Doce de Leite</label>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio2" name="recheio" value="Brigadeiro">
+                        <label for="recheio2" class="option-label">🍫 Brigadeiro</label>
                     </div>
-                    <div class="option-card">
-                        <input type="radio" id="recheio3" name="recheio" value="Mousse de Maracujá" required>
-                        <label for="recheio3" class="option-label">🥭 Mousse de Maracujá</label>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio3" name="recheio" value="Alpino">
+                        <label for="recheio3" class="option-label">🧁 Alpino</label>
                     </div>
-                    <div class="option-card">
-                        <input type="radio" id="recheio4" name="recheio" value="Creme de Ninho" required>
-                        <label for="recheio4" class="option-label">🥥 Creme de Ninho</label>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio4" name="recheio" value="Brigadeiro Branco">
+                        <label for="recheio4" class="option-label">🤍 Brigadeiro Branco</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio5" name="recheio" value="Belga">
+                        <label for="recheio5" class="option-label">🍫 Belga</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio6" name="recheio" value="Doce de Leite">
+                        <label for="recheio6" class="option-label">🥛 Doce de Leite</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio7" name="recheio" value="Ninho">
+                        <label for="recheio7" class="option-label">🥥 Ninho</label>
                     </div>
                 </div>
-                <div class="error-message" id="recheioError">Por favor, selecione um recheio.</div>
+
+                <h4 style="color: #333; margin: 20px 0 10px 0; font-size: 1rem;">Recheios com Frutas <span style="color: #FC466B; font-size: 0.8rem;">(ver preços acima)</span></h4>
+                <div class="options-grid">
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio8" name="recheio" value="Ninho com Abacaxi">
+                        <label for="recheio8" class="option-label">🍍 Ninho com Abacaxi</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio9" name="recheio" value="Doce de Leite com Ameixa">
+                        <label for="recheio9" class="option-label">🟣 Doce de Leite com Ameixa</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio10" name="recheio" value="Maracujá">
+                        <label for="recheio10" class="option-label">🥭 Maracujá</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="recheio11" name="recheio" value="Outros">
+                        <label for="recheio11" class="option-label">✨ Outros</label>
+                    </div>
+                </div>
+                
+                <div class="input-group" id="recheioOutrosGroup" style="display: none; margin-top: 15px;">
+                    <label for="recheioOutros">Especifique o recheio desejado:</label>
+                    <input type="text" id="recheioOutros" name="recheioOutros" placeholder="Digite o sabor do recheio...">
+                </div>
+                
+                <div class="error-message" id="recheioError">Por favor, selecione pelo menos um recheio.</div>
+                <div class="error-message" id="recheioMaxError">Máximo de 2 recheios permitidos.</div>
             </div>
 
             <!-- Cobertura -->
@@ -397,24 +636,25 @@
                         <input type="radio" id="cobertura4" name="cobertura" value="Pasta Americana" required>
                         <label for="cobertura4" class="option-label">🎨 Pasta Americana</label>
                     </div>
+                    <div class="option-card">
+                        <input type="radio" id="cobertura5" name="cobertura" value="Outros" required>
+                        <label for="cobertura5" class="option-label">✨ Outros</label>
+                    </div>
+                </div>
+                <div class="input-group" id="coberturaOutrosGroup" style="display: none; margin-top: 15px;">
+                    <label for="coberturaOutros">Especifique a cobertura desejada:</label>
+                    <input type="text" id="coberturaOutros" name="coberturaOutros" placeholder="Digite o tipo de cobertura...">
                 </div>
                 <div class="error-message" id="coberturaError">Por favor, selecione uma cobertura.</div>
             </div>
 
-            <!-- Data e Horário -->
+            <!-- Data para Retirada -->
             <div class="form-section">
-                <h3 class="section-title">Data e Horário para Retirada <span class="required">*</span></h3>
-                <div class="datetime-group">
-                    <div class="input-group">
-                        <label for="data">Data de Retirada</label>
-                        <input type="date" id="data" name="data" required>
-                        <div class="error-message" id="dataError">Por favor, selecione uma data.</div>
-                    </div>
-                    <div class="input-group">
-                        <label for="horario">Horário</label>
-                        <input type="time" id="horario" name="horario" required>
-                        <div class="error-message" id="horarioError">Por favor, selecione um horário.</div>
-                    </div>
+                <h3 class="section-title">Data para Retirada <span class="required">*</span></h3>
+                <div class="input-group">
+                    <label for="data">Data de Retirada</label>
+                    <input type="date" id="data" name="data" required>
+                    <div class="error-message" id="dataError">Por favor, selecione uma data.</div>
                 </div>
             </div>
 
@@ -454,6 +694,44 @@
                         </div>
                         <div class="addon-price">+R$ 30,00</div>
                     </div>
+                    <div class="addon-option">
+                        <input type="checkbox" id="topo5" name="adicionais" value="Pó Colorido - R$ 10,00">
+                        <div class="addon-info">
+                            <div class="addon-name">🌈 Pó Colorido</div>
+                            <small>Coloração especial para massa</small>
+                        </div>
+                        <div class="addon-price">+R$ 10,00</div>
+                    </div>
+                    <div class="addon-option">
+                        <input type="checkbox" id="topo6" name="adicionais" value="Glitter - R$ 12,00">
+                        <div class="addon-info">
+                            <div class="addon-name">✨ Glitter</div>
+                            <small>Brilho comestível para decoração</small>
+                        </div>
+                        <div class="addon-price">+R$ 12,00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Termos e Condições -->
+            <div class="form-section">
+                <div class="terms-section">
+                    <h3 class="section-title">📋 Termos e Condições</h3>
+                    <div class="terms-box">
+                        <p><strong>⚠️ IMPORTANTE:</strong></p>
+                        <p>• A encomenda só será confirmada mediante o pagamento de <strong>50% do valor total</strong> como sinal.</p>
+                        <p>• O restante (50%) deverá ser pago no momento da retirada.</p>
+                        <p>• Pedidos sem sinal não serão processados.</p>
+                        <p>• Cancelamentos devem ser feitos com pelo menos 24h de antecedência.</p>
+                    </div>
+                    
+                    <div class="checkbox-terms">
+                        <input type="checkbox" id="termos" name="termos" required>
+                        <label for="termos">
+                            <span class="required">*</span> Eu li e concordo com os termos e condições acima
+                        </label>
+                    </div>
+                    <div class="error-message" id="termosError">Você deve aceitar os termos e condições.</div>
                 </div>
             </div>
 
@@ -481,11 +759,30 @@
 
             // Coletar dados do formulário
             const formData = new FormData(this);
-            const massa = formData.get('massa');
-            const recheio = formData.get('recheio');
-            const cobertura = formData.get('cobertura');
+            const peso = formData.get('peso');
+            let massa = formData.get('massa');
+            let cobertura = formData.get('cobertura');
             const data = formData.get('data');
-            const horario = formData.get('horario');
+            
+            // Verificar se selecionou "Outros" e pegar o valor personalizado
+            if (massa === 'Outros') {
+                massa = formData.get('massaOutros') || 'Outros (não especificado)';
+            }
+            if (cobertura === 'Outros') {
+                cobertura = formData.get('coberturaOutros') || 'Outros (não especificado)';
+            }
+            
+            // Coletar recheios selecionados
+            const recheios = [];
+            const recheieoCheckboxes = document.querySelectorAll('input[name="recheio"]:checked');
+            recheieoCheckboxes.forEach(checkbox => {
+                if (checkbox.value === 'Outros') {
+                    const outrosValue = formData.get('recheioOutros') || 'Outros (não especificado)';
+                    recheios.push(outrosValue);
+                } else {
+                    recheios.push(checkbox.value);
+                }
+            });
             
             // Coletar adicionais selecionados
             const adicionais = [];
@@ -497,15 +794,22 @@
             // Formatear data
             const dataFormatada = new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
             
+            // Verificar se tem recheio de fruta para adicionar no preço
+            const recheiosFruta = ['Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'];
+            const temRecheioFruta = recheios.some(recheio => recheiosFruta.includes(recheio));
+            
             // Criar mensagem para WhatsApp
             let mensagem = `🎂 *PEDIDO DE BOLO*\n\n`;
             mensagem += `📋 *Detalhes do Pedido:*\n`;
+            mensagem += `• Peso: ${peso}\n`;
             mensagem += `• Massa: ${massa}\n`;
-            mensagem += `• Recheio: ${recheio}\n`;
-            mensagem += `• Cobertura: ${cobertura}\n\n`;
-            mensagem += `📅 *Retirada:*\n`;
-            mensagem += `• Data: ${dataFormatada}\n`;
-            mensagem += `• Horário: ${horario}\n\n`;
+            mensagem += `• Recheio(s): ${recheios.join(', ')}\n`;
+            mensagem += `• Cobertura: ${cobertura}\n`;
+            if (temRecheioFruta) {
+                mensagem += `• ⚠️ *Adicional de recheio de fruta incluído no preço*\n`;
+            }
+            mensagem += `\n📅 *Retirada:*\n`;
+            mensagem += `• Data: ${dataFormatada}\n\n`;
             
             if (adicionais.length > 0) {
                 mensagem += `✨ *Adicionais:*\n`;
@@ -515,6 +819,7 @@
                 mensagem += `\n`;
             }
             
+            mensagem += `💰 *IMPORTANTE:* Confirmo que li os termos e concordo com o pagamento de 50% de sinal para confirmação do pedido.\n\n`;
             mensagem += `Gostaria de confirmar este pedido! 😊`;
 
             // Codificar mensagem para URL
@@ -530,28 +835,76 @@
         function validateForm() {
             let isValid = true;
             
+            // Validar peso
+            if (!document.querySelector('input[name="peso"]:checked')) {
+                document.getElementById('pesoError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('pesoError').style.display = 'none';
+            }
+            
             // Validar massa
-            if (!document.querySelector('input[name="massa"]:checked')) {
+            const massaSelecionada = document.querySelector('input[name="massa"]:checked');
+            if (!massaSelecionada) {
                 document.getElementById('massaError').style.display = 'block';
                 isValid = false;
             } else {
                 document.getElementById('massaError').style.display = 'none';
+                
+                // Se selecionou "Outros", verificar se preencheu o campo
+                if (massaSelecionada.value === 'Outros') {
+                    const massaOutros = document.getElementById('massaOutros').value.trim();
+                    if (!massaOutros) {
+                        document.getElementById('massaError').textContent = 'Por favor, especifique a massa desejada.';
+                        document.getElementById('massaError').style.display = 'block';
+                        isValid = false;
+                    }
+                }
             }
             
-            // Validar recheio
-            if (!document.querySelector('input[name="recheio"]:checked')) {
+            // Validar recheio (pelo menos 1, máximo 2)
+            const recheiosSelecionados = document.querySelectorAll('input[name="recheio"]:checked');
+            if (recheiosSelecionados.length === 0) {
                 document.getElementById('recheioError').style.display = 'block';
+                document.getElementById('recheioMaxError').style.display = 'none';
+                isValid = false;
+            } else if (recheiosSelecionados.length > 2) {
+                document.getElementById('recheioError').style.display = 'none';
+                document.getElementById('recheioMaxError').style.display = 'block';
                 isValid = false;
             } else {
                 document.getElementById('recheioError').style.display = 'none';
+                document.getElementById('recheioMaxError').style.display = 'none';
+                
+                // Se selecionou "Outros", verificar se preencheu o campo
+                const temOutros = Array.from(recheiosSelecionados).some(checkbox => checkbox.value === 'Outros');
+                if (temOutros) {
+                    const recheioOutros = document.getElementById('recheioOutros').value.trim();
+                    if (!recheioOutros) {
+                        document.getElementById('recheioError').textContent = 'Por favor, especifique o recheio desejado.';
+                        document.getElementById('recheioError').style.display = 'block';
+                        isValid = false;
+                    }
+                }
             }
             
             // Validar cobertura
-            if (!document.querySelector('input[name="cobertura"]:checked')) {
+            const coberturaSelecionada = document.querySelector('input[name="cobertura"]:checked');
+            if (!coberturaSelecionada) {
                 document.getElementById('coberturaError').style.display = 'block';
                 isValid = false;
             } else {
                 document.getElementById('coberturaError').style.display = 'none';
+                
+                // Se selecionou "Outros", verificar se preencheu o campo
+                if (coberturaSelecionada.value === 'Outros') {
+                    const coberturaOutros = document.getElementById('coberturaOutros').value.trim();
+                    if (!coberturaOutros) {
+                        document.getElementById('coberturaError').textContent = 'Por favor, especifique a cobertura desejada.';
+                        document.getElementById('coberturaError').style.display = 'block';
+                        isValid = false;
+                    }
+                }
             }
             
             // Validar data
@@ -563,17 +916,70 @@
                 document.getElementById('dataError').style.display = 'none';
             }
             
-            // Validar horário
-            const horario = document.getElementById('horario').value;
-            if (!horario) {
-                document.getElementById('horarioError').style.display = 'block';
+            // Validar termos
+            if (!document.getElementById('termos').checked) {
+                document.getElementById('termosError').style.display = 'block';
                 isValid = false;
             } else {
-                document.getElementById('horarioError').style.display = 'none';
+                document.getElementById('termosError').style.display = 'none';
             }
             
             return isValid;
         }
+
+        // Controlar exibição dos campos "Outros"
+        document.querySelectorAll('input[name="massa"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const outrosGroup = document.getElementById('massaOutrosGroup');
+                if (this.value === 'Outros') {
+                    outrosGroup.style.display = 'block';
+                    document.getElementById('massaOutros').required = true;
+                } else {
+                    outrosGroup.style.display = 'none';
+                    document.getElementById('massaOutros').required = false;
+                }
+            });
+        });
+
+        document.querySelectorAll('input[name="cobertura"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const outrosGroup = document.getElementById('coberturaOutrosGroup');
+                if (this.value === 'Outros') {
+                    outrosGroup.style.display = 'block';
+                    document.getElementById('coberturaOutros').required = true;
+                } else {
+                    outrosGroup.style.display = 'none';
+                    document.getElementById('coberturaOutros').required = false;
+                }
+            });
+        });
+
+        document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const outrosGroup = document.getElementById('recheioOutrosGroup');
+                const outrosCheckbox = document.getElementById('recheio11');
+                
+                if (this.value === 'Outros' && this.checked) {
+                    outrosGroup.style.display = 'block';
+                    document.getElementById('recheioOutros').required = true;
+                } else if (this.value === 'Outros' && !this.checked) {
+                    outrosGroup.style.display = 'none';
+                    document.getElementById('recheioOutros').required = false;
+                }
+                
+                // Controlar máximo de 2 recheios
+                const selecionados = document.querySelectorAll('input[name="recheio"]:checked');
+                if (selecionados.length >= 2) {
+                    document.querySelectorAll('input[name="recheio"]:not(:checked)').forEach(cb => {
+                        cb.disabled = true;
+                    });
+                } else {
+                    document.querySelectorAll('input[name="recheio"]').forEach(cb => {
+                        cb.disabled = false;
+                    });
+                }
+            });
+        });
 
         // Adicionar animações aos cards quando selecionados
         document.querySelectorAll('input[type="radio"]').forEach(radio => {
@@ -586,6 +992,18 @@
                 
                 // Adicionar animação ao card selecionado
                 this.closest('.option-card').classList.add('selected');
+            });
+        });
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.name === 'recheio') {
+                    if (this.checked) {
+                        this.closest('.option-card-checkbox').classList.add('selected');
+                    } else {
+                        this.closest('.option-card-checkbox').classList.remove('selected');
+                    }
+                }
             });
         });
     </script>
