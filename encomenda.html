@@ -268,18 +268,34 @@
         }
 
         @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                padding: 20px;
-            }
+    .options-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .option-label {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .peso-kg {
+        font-size: 1rem;
+    }
+    
+    .peso-preco {
+        font-size: 0.8rem;
+    }
+    
+    .peso-serve {
+        font-size: 0.7rem;
+    }
+}
 
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
+@media (max-width: 480px) {
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
             .addon-option {
                 flex-direction: column;
@@ -769,19 +785,11 @@
             </div>
 
             <button type="submit" class="submit-btn">
-                <span>📱 Solicitar Pedido via WhatsApp</span>
+             <span id="submitButtonText">📱 Solicitar Pedido via WhatsApp - R$ 0,00</span>
             </button>
             
             <!-- Total do Pedido -->
-            <div class="total-section">
-                <div class="total-box">
-                    <h3>💰 Total do Pedido</h3>
-                    <div class="total-value" id="totalValue">R$ 0,00</div>
-                    <div class="total-details" id="totalDetails">
-                        <small>Selecione os itens para calcular o valor</small>
-                    </div>
-                </div>
-            </div>
+           
         </form>
     </div>
 
@@ -860,14 +868,12 @@
                 detalhes.push(`${nome}: R$ ${preco.toFixed(2)}`);
             });
 
-            // Atualizar display
-            document.getElementById('totalValue').textContent = `R$ ${total.toFixed(2)}`;
-            
-            if (detalhes.length > 0) {
-                document.getElementById('totalDetails').innerHTML = detalhes.join('<br>');
-            } else {
-                document.getElementById('totalDetails').innerHTML = '<small>Selecione os itens para calcular o valor</small>';
-            }
+            // Atualizar botão de submit
+const submitButton = document.getElementById('submitButtonText');
+if (submitButton) {
+    submitButton.textContent = `📱 Solicitar Pedido via WhatsApp - R$ ${total.toFixed(2)}`;
+}
+
         }
 
         // Adicionar listeners para calcular o total
