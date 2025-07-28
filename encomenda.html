@@ -1013,19 +1013,7 @@ if (submitButton) {
             });
         });
 
-        document.querySelectorAll('input[name=""]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const outrosGroup = document.getElementById('coberturaOutrosGroup');
-                if (this.value === 'Outros') {
-                    outrosGroup.style.display = 'block';
-                    document.getElementById('coberturaOutros').required = true;
-                } else {
-                    outrosGroup.style.display = 'none';
-                    document.getElementById('coberturaOutros').required = false;
-                }
-            });
-        });
-
+        
         document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 const outrosGroup = document.getElementById('recheioOutrosGroup');
