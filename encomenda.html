@@ -854,15 +854,11 @@ if (submitButton) {
             const formData = new FormData(this);
             const peso = formData.get('peso');
             let massa = formData.get('massa');
-            let cobertura = formData.get('cobertura');
             const data = formData.get('data');
             
             // Verificar se selecionou "Outros" e pegar o valor personalizado
             if (massa === 'Outros') {
                 massa = formData.get('massaOutros') || 'Outros (não especificado)';
-            }
-            if (cobertura === 'Outros') {
-                cobertura = formData.get('coberturaOutros') || 'Outros (não especificado)';
             }
             
             // Coletar recheios selecionados
@@ -897,7 +893,6 @@ if (submitButton) {
             mensagem += `• Peso: ${peso}\n`;
             mensagem += `• Massa: ${massa}\n`;
             mensagem += `• Recheio(s): ${recheios.join(', ')}\n`;
-            mensagem += `• Cobertura: ${cobertura}\n`;
             if (temRecheioFruta) {
                 mensagem += `• ⚠️ *Adicional de recheio de fruta incluído no preço*\n`;
             }
@@ -982,24 +977,7 @@ if (submitButton) {
                 }
             }
             
-            // Validar cobertura
-            const coberturaSelecionada = document.querySelector('input[name="cobertura"]:checked');
-            if (!coberturaSelecionada) {
-                document.getElementById('coberturaError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('coberturaError').style.display = 'none';
-                
-                // Se selecionou "Outros", verificar se preencheu o campo
-                if (coberturaSelecionada.value === 'Outros') {
-                    const coberturaOutros = document.getElementById('coberturaOutros').value.trim();
-                    if (!coberturaOutros) {
-                        document.getElementById('coberturaError').textContent = 'Por favor, especifique a cobertura desejada.';
-                        document.getElementById('coberturaError').style.display = 'block';
-                        isValid = false;
-                    }
-                }
-            }
+           
             
             // Validar data
             const data = document.getElementById('data').value;
@@ -1035,7 +1013,7 @@ if (submitButton) {
             });
         });
 
-        document.querySelectorAll('input[name="cobertura"]').forEach(radio => {
+        document.querySelectorAll('input[name=""]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const outrosGroup = document.getElementById('coberturaOutrosGroup');
                 if (this.value === 'Outros') {
