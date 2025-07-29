@@ -144,7 +144,8 @@
             color: #333;
         }
 
-        .input-group input[type="date"] {
+        .input-group input[type="text"], .input-group input[type="date"] {
+
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e9ecef;
@@ -154,8 +155,7 @@
             background: #f8f9fa;
         }
 
-        .input-group input[type="date"]:focus {
-            outline: none;
+        .input-group input[type="text"]:focus, .input-group input[type="date"]:focus {    outline: none;
             border-color: #3F5EFB;
             background: white;
             box-shadow: 0 0 0 3px rgba(63, 94, 251, 0.1);
@@ -671,7 +671,7 @@
                 <h3 class="section-title">Data para Retirada <span class="required">*</span></h3>
                 <div class="input-group">
                     <label for="data">Data de Retirada</label>
-                    <input type="date" id="data" name="data" required>
+                    <input type="text" id="data" name="data" placeholder="DD/MM" maxlength="5" pattern="[0-9]{2}/[0-9]{2}" required>
                     <div class="error-message" id="dataError">Por favor, selecione uma data.</div>
                 </div>
             </div>
@@ -739,10 +739,45 @@
     </div>
 
     <script>
-        // Definir data mínima como hoje
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('data').setAttribute('min', today);
+        // Formatação automática do campo de data (DD/MM)
+document.getElementById('data').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    
+    if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+    
+    e.target.value = value;
+});
 
+// Validação da data
+document.getElementById('data').addEventListener('blur', function(e) {
+    const value = e.target.value;
+    const regex = /^([0-2][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
+    
+    if (value && !regex.test(value)) {
+        e.target.setCustomValidity('Digite uma data válida no formato DD/MM');
+    } else if (value) {
+        const [dia, mes] = value.split('/').map(Number);
+        const hoje = new Date();
+        const anoAtual = hoje.getFullYear();
+        const dataInformada = new Date(anoAtual, mes - 1, dia);
+        
+        // Se a data já passou este ano, considerar o próximo ano
+        if (dataInformada < hoje) {
+            dataInformada.setFullYear(anoAtual + 1);
+        }
+        
+        // Validar se o dia existe no mês
+        if (dataInformada.getDate() !== dia || dataInformada.getMonth() !== mes - 1) {
+            e.target.setCustomValidity('Data inválida');
+        } else {
+            e.target.setCustomValidity('');
+        }
+    } else {
+        e.target.setCustomValidity('');
+    }
+});
         // Número do WhatsApp (substitua pelo seu número)
         const WHATSAPP_NUMBER = '5561991944143'; // Coloque seu número aqui
 
@@ -864,36 +899,57 @@ document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
         const valor = this.value;
 
         if (this.checked) {
-            const selecionados = document.querySelectorAll('input[name="recheio"]:checked');
+            // Desmarcar recheios do grupo oposto ANTES de verificar o limite
+            if (recheiosTradicionais.includes(valor)) {
+                // Se selecionou tradicional, desmarcar todos os com fruta
+                recheiosComFruta.forEach(nome => {
+                    const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
+                    if (cb && cb.checked) {
+                        cb.checked = false;
+                        // Remover classe visual se existir
+                        const cardCheckbox = cb.closest('.option-card-checkbox');
+                        if (cardCheckbox) cardCheckbox.classList.remove('selected');
+                    }
+                });
+            } else if (recheiosComFruta.includes(valor)) {
+                // Se selecionou com fruta, desmarcar todos os tradicionais
+                recheiosTradicionais.forEach(nome => {
+                    const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
+                    if (cb && cb.checked) {
+                        cb.checked = false;
+                        // Remover classe visual se existir
+                        const cardCheckbox = cb.closest('.option-card-checkbox');
+                        if (cardCheckbox) cardCheckbox.classList.remove('selected');
+                    }
+                });
+            }
 
-            // Se já houver 2 recheios, não permite mais
+            // Agora verificar limite de 2 recheios
+            const selecionados = document.querySelectorAll('input[name="recheio"]:checked');
             if (selecionados.length > 2) {
                 this.checked = false;
                 return;
             }
 
-            // Desmarcar recheios do grupo oposto
-            if (recheiosTradicionais.includes(valor)) {
-                recheiosComFruta.forEach(nome => {
-                    const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
-                    if (cb) cb.checked = false;
-                });
-            } else if (recheiosComFruta.includes(valor)) {
-                recheiosTradicionais.forEach(nome => {
-                    const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
-                    if (cb) cb.checked = false;
-                });
-            }
-
             // Desmarcar "Outros" se necessário
             if (valor !== 'Outros') {
                 const outrosCheckbox = document.getElementById('recheio11');
-                if (outrosCheckbox) {
+                if (outrosCheckbox && outrosCheckbox.checked) {
                     outrosCheckbox.checked = false;
                     document.getElementById('recheioOutrosGroup').style.display = 'none';
                     document.getElementById('recheioOutros').required = false;
+                    const outrosCard = outrosCheckbox.closest('.option-card-checkbox');
+                    if (outrosCard) outrosCard.classList.remove('selected');
                 }
             }
+
+            // Adicionar classe visual
+            const cardCheckbox = this.closest('.option-card-checkbox');
+            if (cardCheckbox) cardCheckbox.classList.add('selected');
+        } else {
+            // Remover classe visual quando desmarcado
+            const cardCheckbox = this.closest('.option-card-checkbox');
+            if (cardCheckbox) cardCheckbox.classList.remove('selected');
         }
 
         calcularTotal(); // Atualiza o valor
@@ -939,9 +995,9 @@ document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
                 adicionais.push(checkbox.value);
             });
 
-            // Formatear data
-            const dataFormatada = new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
-            
+            // Formatear data (já está no formato DD/MM)
+            const dataFormatada = data;
+
             // Verificar se tem recheio de fruta para adicionar no preço
             const recheiosFruta = ['Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'];
             const temRecheioFruta = recheios.some(recheio => recheiosFruta.includes(recheio));
