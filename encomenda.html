@@ -840,6 +840,49 @@ if (submitButton) {
 
             // Calcular total inicial
             calcularTotal();
+                // Recheios tradicionais e com fruta
+    const recheiosTradicionais = [
+        'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
+        'Belga', 'Doce de Leite', 'Ninho'
+    ];
+    const recheiosComFruta = [
+        'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
+    ];
+
+    // Ao clicar em recheio, desmarcar o grupo oposto
+    document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const valor = this.value;
+
+            if (this.checked) {
+                if (recheiosTradicionais.includes(valor)) {
+                    // Desmarcar frutas
+                    recheiosComFruta.forEach(nome => {
+                        const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
+                        if (cb) cb.checked = false;
+                    });
+                } else if (recheiosComFruta.includes(valor)) {
+                    // Desmarcar tradicionais
+                    recheiosTradicionais.forEach(nome => {
+                        const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
+                        if (cb) cb.checked = false;
+                    });
+                }
+
+                // Se “Outros” estiver marcado, desmarcar também
+                if (valor !== 'Outros') {
+                    const outrosCheckbox = document.getElementById('recheio11');
+                    if (outrosCheckbox) {
+                        outrosCheckbox.checked = false;
+                        document.getElementById('recheioOutrosGroup').style.display = 'none';
+                        document.getElementById('recheioOutros').required = false;
+                    }
+                }
+
+                calcularTotal(); // Atualiza preço
+            }
+        });
+    });
         });
 
         document.getElementById('orderForm').addEventListener('submit', function(e) {
