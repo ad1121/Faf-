@@ -142,7 +142,23 @@
             margin-bottom: 8px;
             font-weight: 500;
             color: #333;
-        }
+        }// Recheios tradicionais e com fruta
+    const recheiosTradicionais = [
+        'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
+        'Belga', 'Doce de Leite', 'Ninho'
+    ];
+    const recheiosComFruta = [
+        'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
+    ];
+
+  // Recheios tradicionais e com fruta
+const recheiosTradicionais = [
+    'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
+    'Belga', 'Doce de Leite', 'Ninho'
+];
+const recheiosComFruta = [
+    'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
+];
 
         .input-group input[type="text"], .input-group input[type="date"] {
 
@@ -875,84 +891,86 @@ if (submitButton) {
 
             // Calcular total inicial
             calcularTotal();
-                // Recheios tradicionais e com fruta
-    const recheiosTradicionais = [
-        'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
-        'Belga', 'Doce de Leite', 'Ninho'
-    ];
-    const recheiosComFruta = [
-        'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
-    ];
+                
 
-  // Recheios tradicionais e com fruta
-const recheiosTradicionais = [
-    'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
-    'Belga', 'Doce de Leite', 'Ninho'
-];
-const recheiosComFruta = [
-    'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
-];
-
-// Ao clicar em recheio, desmarcar o grupo oposto e controlar máximo 2
+// Controle de seleção de recheios
 document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
-    checkbox.addEventListener('change', function () {
+    checkbox.addEventListener('change', function() {
         const valor = this.value;
-
+        
         if (this.checked) {
-            // Desmarcar recheios do grupo oposto ANTES de verificar o limite
+            // Primeiro, desmarcar todos os recheios do grupo oposto
             if (recheiosTradicionais.includes(valor)) {
-                // Se selecionou tradicional, desmarcar todos os com fruta
+                // Selecionou tradicional - desmarcar todos com fruta
                 recheiosComFruta.forEach(nome => {
                     const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
-                    if (cb && cb.checked) {
+                    if (cb) {
                         cb.checked = false;
-                        // Remover classe visual se existir
-                        const cardCheckbox = cb.closest('.option-card-checkbox');
-                        if (cardCheckbox) cardCheckbox.classList.remove('selected');
+                        const card = cb.closest('.option-card-checkbox');
+                        if (card) card.classList.remove('selected');
                     }
                 });
             } else if (recheiosComFruta.includes(valor)) {
-                // Se selecionou com fruta, desmarcar todos os tradicionais
+                // Selecionou com fruta - desmarcar todos tradicionais
                 recheiosTradicionais.forEach(nome => {
                     const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
-                    if (cb && cb.checked) {
+                    if (cb) {
                         cb.checked = false;
-                        // Remover classe visual se existir
-                        const cardCheckbox = cb.closest('.option-card-checkbox');
-                        if (cardCheckbox) cardCheckbox.classList.remove('selected');
+                        const card = cb.closest('.option-card-checkbox');
+                        if (card) card.classList.remove('selected');
                     }
                 });
             }
-
-            // Agora verificar limite de 2 recheios
-            const selecionados = document.querySelectorAll('input[name="recheio"]:checked');
-            if (selecionados.length > 2) {
-                this.checked = false;
-                return;
-            }
-
-            // Desmarcar "Outros" se necessário
-            if (valor !== 'Outros') {
+            
+            // Tratar campo "Outros"
+            if (valor === 'Outros') {
+                // Se selecionou "Outros", desmarcar todos os outros
+                document.querySelectorAll('input[name="recheio"]:not([value="Outros"])').forEach(cb => {
+                    if (cb.checked) {
+                        cb.checked = false;
+                        const card = cb.closest('.option-card-checkbox');
+                        if (card) card.classList.remove('selected');
+                    }
+                });
+                document.getElementById('recheioOutrosGroup').style.display = 'block';
+                document.getElementById('recheioOutros').required = true;
+            } else {
+                // Se selecionou qualquer outro, desmarcar "Outros"
                 const outrosCheckbox = document.getElementById('recheio11');
                 if (outrosCheckbox && outrosCheckbox.checked) {
                     outrosCheckbox.checked = false;
-                    document.getElementById('recheioOutrosGroup').style.display = 'none';
-                    document.getElementById('recheioOutros').required = false;
                     const outrosCard = outrosCheckbox.closest('.option-card-checkbox');
                     if (outrosCard) outrosCard.classList.remove('selected');
+                    document.getElementById('recheioOutrosGroup').style.display = 'none';
+                    document.getElementById('recheioOutros').required = false;
                 }
             }
-
-            // Adicionar classe visual
-            const cardCheckbox = this.closest('.option-card-checkbox');
-            if (cardCheckbox) cardCheckbox.classList.add('selected');
+            
+            // Verificar limite máximo de 2 recheios (após limpeza)
+            const selecionados = document.querySelectorAll('input[name="recheio"]:checked');
+            if (selecionados.length > 2) {
+                this.checked = false;
+                alert('Máximo de 2 recheios permitidos');
+                return;
+            }
+            
+            // Adicionar visual de selecionado
+            const card = this.closest('.option-card-checkbox');
+            if (card) card.classList.add('selected');
+            
         } else {
-            // Remover classe visual quando desmarcado
-            const cardCheckbox = this.closest('.option-card-checkbox');
-            if (cardCheckbox) cardCheckbox.classList.remove('selected');
+            // Remover visual quando desmarcado
+            const card = this.closest('.option-card-checkbox');
+            if (card) card.classList.remove('selected');
+            
+            // Se desmarcou "Outros", esconder campo
+            if (valor === 'Outros') {
+                document.getElementById('recheioOutrosGroup').style.display = 'none';
+                document.getElementById('recheioOutros').required = false;
+            }
         }
-
-        calcularTotal(); // Atualiza o valor
+        
+        calcularTotal();
     });
 });
         });
