@@ -142,24 +142,7 @@
             margin-bottom: 8px;
             font-weight: 500;
             color: #333;
-        }// Recheios tradicionais e com fruta
-    const recheiosTradicionais = [
-        'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
-        'Belga', 'Doce de Leite', 'Ninho'
-    ];
-    const recheiosComFruta = [
-        'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
-    ];
-
-  // Recheios tradicionais e com fruta
-const recheiosTradicionais = [
-    'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
-    'Belga', 'Doce de Leite', 'Ninho'
-];
-const recheiosComFruta = [
-    'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
-];
-
+      
         .input-group input[type="text"], .input-group input[type="date"] {
 
             width: 100%;
@@ -225,46 +208,7 @@ const recheiosComFruta = [
             font-size: 1.1rem;
         }
 
-        .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #3F5EFB, #FC466B);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #FC466B, #3F5EFB);
-            transition: left 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(63, 94, 251, 0.4);
-        }
-
-        .submit-btn:hover::before {
-            left: 0;
-        }
-
-        .submit-btn span {
-            position: relative;
-            z-index: 1;
-        }
-
+        
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -755,6 +699,16 @@ const recheiosComFruta = [
     </div>
 
     <script>
+    // Definir arrays de recheios
+        const recheiosTradicionais = [
+            'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
+            'Belga', 'Doce de Leite', 'Ninho'
+        ];
+        const recheiosComFruta = [
+            'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
+        ];
+
+        // Formatação automática do campo de data (DD/MM)
         // Formatação automática do campo de data (DD/MM)
 document.getElementById('data').addEventListener('input', function(e) {
     let value = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
@@ -920,6 +874,18 @@ document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
                         if (card) card.classList.remove('selected');
                     }
                 });
+                
+                // Para recheios com fruta, desmarcar outros recheios com fruta (limite 1)
+                recheiosComFruta.forEach(nome => {
+                    if (nome !== valor) {
+                        const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
+                        if (cb && cb.checked) {
+                            cb.checked = false;
+                            const card = cb.closest('.option-card-checkbox');
+                            if (card) card.classList.remove('selected');
+                        }
+                    }
+                });
             }
             
             // Tratar campo "Outros"
@@ -946,14 +912,22 @@ document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
                 }
             }
             
-            // Verificar limite máximo de 2 recheios (após limpeza)
+           // Verificar limites específicos por tipo
             const selecionados = document.querySelectorAll('input[name="recheio"]:checked');
-            if (selecionados.length > 2) {
+            const tradicionaisSelecionados = Array.from(selecionados).filter(cb => recheiosTradicionais.includes(cb.value));
+            const frutasSelecionadas = Array.from(selecionados).filter(cb => recheiosComFruta.includes(cb.value));
+            
+            if (tradicionaisSelecionados.length > 2) {
                 this.checked = false;
-                alert('Máximo de 2 recheios permitidos');
+                alert('Máximo de 2 recheios tradicionais permitidos');
                 return;
             }
             
+            if (frutasSelecionadas.length > 1) {
+                this.checked = false;
+                alert('Apenas 1 recheio com fruta permitido');
+                return;
+            } 
             // Adicionar visual de selecionado
             const card = this.closest('.option-card-checkbox');
             if (card) card.classList.add('selected');
