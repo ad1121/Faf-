@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encomendar Bolo</title>
     <style>
+
+        .emoji {
+    -webkit-text-fill-color: initial !important;
+    background: none !important;
+    display: inline;
+}
+
         .submit-btn {
     width: 100%;
     padding: 15px 25px;
@@ -228,24 +235,28 @@
             font-size: 1.1rem;
         }
 
-        
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
+ .back-btn {
+    display: inline-block;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #FC466B, #3F5EFB);
+    color: white !important;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(252, 70, 107, 0.3);
+    text-decoration: none !important;  /* <-- remove o sublinhado */
+}
 
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateX(-5px);
-        }
+.back-btn:hover {
+    background: linear-gradient(135deg, #3F5EFB, #FC466B);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(63, 94, 251, 0.3);
+}
+
+
 
         @media (max-width: 768px) {
     .options-grid {
@@ -481,16 +492,42 @@
             opacity: 0.9;
             line-height: 1.4;
         }
+
+        .submit-btn {
+    width: 100%;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #FC466B, #3F5EFB);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(252, 70, 107, 0.3);
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #3F5EFB, #FC466B);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(63, 94, 251, 0.3);
+}
+
+.back-btn {
+    width: auto !important;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
     </style>
 </head>
 <body>
-    <a href="#" class="back-btn" onclick="history.back()">
-        ← Voltar
-    </a>
+<button type="button" class="submit-btn back-btn" onclick="history.back()">← Voltar</button>
+
 
     <div class="container">
         <div class="header">
-            <h1>🎂 Encomendar Bolo</h1>
+            <h1><span class="emoji">🎂</span> Encomendar Bolo</h1>
             <p>Personalize seu bolo dos sonhos</p>
         </div>
 
