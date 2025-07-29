@@ -849,40 +849,56 @@ if (submitButton) {
         'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
     ];
 
-    // Ao clicar em recheio, desmarcar o grupo oposto
-    document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const valor = this.value;
+  // Recheios tradicionais e com fruta
+const recheiosTradicionais = [
+    'Prestígio', 'Brigadeiro', 'Alpino', 'Brigadeiro Branco',
+    'Belga', 'Doce de Leite', 'Ninho'
+];
+const recheiosComFruta = [
+    'Ninho com Abacaxi', 'Doce de Leite com Ameixa', 'Maracujá'
+];
 
-            if (this.checked) {
-                if (recheiosTradicionais.includes(valor)) {
-                    // Desmarcar frutas
-                    recheiosComFruta.forEach(nome => {
-                        const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
-                        if (cb) cb.checked = false;
-                    });
-                } else if (recheiosComFruta.includes(valor)) {
-                    // Desmarcar tradicionais
-                    recheiosTradicionais.forEach(nome => {
-                        const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
-                        if (cb) cb.checked = false;
-                    });
-                }
+// Ao clicar em recheio, desmarcar o grupo oposto e controlar máximo 2
+document.querySelectorAll('input[name="recheio"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        const valor = this.value;
 
-                // Se “Outros” estiver marcado, desmarcar também
-                if (valor !== 'Outros') {
-                    const outrosCheckbox = document.getElementById('recheio11');
-                    if (outrosCheckbox) {
-                        outrosCheckbox.checked = false;
-                        document.getElementById('recheioOutrosGroup').style.display = 'none';
-                        document.getElementById('recheioOutros').required = false;
-                    }
-                }
+        if (this.checked) {
+            const selecionados = document.querySelectorAll('input[name="recheio"]:checked');
 
-                calcularTotal(); // Atualiza preço
+            // Se já houver 2 recheios, não permite mais
+            if (selecionados.length > 2) {
+                this.checked = false;
+                return;
             }
-        });
+
+            // Desmarcar recheios do grupo oposto
+            if (recheiosTradicionais.includes(valor)) {
+                recheiosComFruta.forEach(nome => {
+                    const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
+                    if (cb) cb.checked = false;
+                });
+            } else if (recheiosComFruta.includes(valor)) {
+                recheiosTradicionais.forEach(nome => {
+                    const cb = document.querySelector(`input[name="recheio"][value="${nome}"]`);
+                    if (cb) cb.checked = false;
+                });
+            }
+
+            // Desmarcar "Outros" se necessário
+            if (valor !== 'Outros') {
+                const outrosCheckbox = document.getElementById('recheio11');
+                if (outrosCheckbox) {
+                    outrosCheckbox.checked = false;
+                    document.getElementById('recheioOutrosGroup').style.display = 'none';
+                    document.getElementById('recheioOutros').required = false;
+                }
+            }
+        }
+
+        calcularTotal(); // Atualiza o valor
     });
+});
         });
 
         document.getElementById('orderForm').addEventListener('submit', function(e) {
@@ -1070,17 +1086,7 @@ if (submitButton) {
                     document.getElementById('recheioOutros').required = false;
                 }
                 
-                // Controlar máximo de 2 recheios
-                const selecionados = document.querySelectorAll('input[name="recheio"]:checked');
-                if (selecionados.length >= 2) {
-                    document.querySelectorAll('input[name="recheio"]:not(:checked)').forEach(cb => {
-                        cb.disabled = true;
-                    });
-                } else {
-                    document.querySelectorAll('input[name="recheio"]').forEach(cb => {
-                        cb.disabled = false;
-                    });
-                }
+                
             });
         });
 
