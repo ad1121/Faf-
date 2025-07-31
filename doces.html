@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encomendar Doces e Cupcakes</title>
+    <style>
+        .emoji {
+            -webkit-text-fill-color: initial !important;
+            background: none !important;
+            display: inline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #FC466B, #3F5EFB);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(252, 70, 107, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(63, 94, 251, 0.3);
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .add-to-cart-btn:hover {
+            background: linear-gradient(135deg, #20c997, #28a745);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(32, 201, 151, 0.3);
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #3F5EFB 0%, #FC466B 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            border-radius: 2px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-card {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card input[type="radio"] {
+            display: none;
+        }
+
+        .option-label {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            color: #495057;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            opacity: 0.1;
+            transition: left 0.3s ease;
+        }
+
+        .option-card:hover .option-label {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card input[type="radio"]:checked + .option-label {
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(63, 94, 251, 0.3);
+        }
+
+        .option-card input[type="radio"]:checked + .option-label::before {
+            left: 0;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .input-group input[type="text"], .input-group input[type="date"], .input-group input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .input-group input[type="text"]:focus, .input-group input[type="date"]:focus, .input-group input[type="number"]:focus {
+            outline: none;
+            border-color: #3F5EFB;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(63, 94, 251, 0.1);
+        }
+
+        .option-card-checkbox {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .option-card-checkbox .option-label {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            color: #495057;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card-checkbox:hover .option-label {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card-checkbox input[type="checkbox"]:checked + .option-label {
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(63, 94, 251, 0.3);
+        }
+
+        /* Encontre esta parte no seu CSS e substitua: */
+
+.back-btn {
+    display: inline-block;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #FC466B, #3F5EFB);
+    color: white !important;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(252, 70, 107, 0.3);
+    text-decoration: none !important;
+    width: auto; /* ADICIONE ESTA LINHA */
+    margin-bottom: 20px; /* OPCIONAL: adiciona espaço abaixo do botão */
+}
+
+.back-btn:hover {
+    background: linear-gradient(135deg, #3F5EFB, #FC466B);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(63, 94, 251, 0.3);
+}
+        .terms-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .terms-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FC466B;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .terms-box p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .terms-box strong {
+            color: #FC466B;
+        }
+
+        .checkbox-terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .checkbox-terms input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: #3F5EFB;
+        }
+
+        .checkbox-terms label {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        .produto-info {
+            text-align: center;
+        }
+
+        .produto-nome {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .produto-preco {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #FC466B;
+            margin-bottom: 3px;
+        }
+
+        .produto-qtd {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .quantity-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 2px dashed #dee2e6;
+        }
+
+        .cart-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #dee2e6;
+        }
+
+        .cart-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: #FC466B;
+            margin-right: 15px;
+        }
+
+        .remove-item-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-item-btn:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .cart-total {
+            background: linear-gradient(135deg, #3F5EFB, #FC466B);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .option-label {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .cart-item-price {
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button type="button" class="submit-btn back-btn" onclick="history.back()">← Voltar</button>
+
+    <div class="container">
+        <div class="header">
+            <h1><span class="emoji">🧁</span> Encomendar Doces & Cupcakes</h1>
+            <p>Escolha seus doces favoritos</p>
+        </div>
+
+        <!-- Carrinho de Compras -->
+        <div class="form-section" id="cartSection">
+            <div class="cart-section">
+                <h3 class="section-title">🛒 Meu Carrinho</h3>
+                <div id="cartItems">
+                    <div class="empty-cart">Seu carrinho está vazio</div>
+                </div>
+                <div id="cartTotal" style="display: none;">
+                    <div class="cart-total">Total: R$ 0,00</div>
+                </div>
+            </div>
+        </div>
+
+        <form id="productForm">
+            <!-- Tipo de Produto -->
+            <div class="form-section">
+                <h3 class="section-title">Tipo de Produto <span class="required">*</span></h3>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <input type="radio" id="produto1" name="produto" value="Doces Gourmet" required>
+                        <label for="produto1" class="option-label">
+                            <div class="produto-info">
+                                <div class="produto-nome">🍬 Doces Gourmet</div>
+                                <div class="produto-preco">R$ 150,00</div>
+                                <div class="produto-qtd">(100 unidades)</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="produto2" name="produto" value="Cupcakes Tamanho M" required>
+                        <label for="produto2" class="option-label">
+                            <div class="produto-info">
+                                <div class="produto-nome">🧁 Cupcakes M</div>
+                                <div class="produto-preco">R$ 4,50/un</div>
+                                <div class="produto-qtd">(mínimo 1 un)</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="produto3" name="produto" value="Cupcakes Tamanho G" required>
+                        <label for="produto3" class="option-label">
+                            <div class="produto-info">
+                                <div class="produto-nome">🧁 Cupcakes G</div>
+                                <div class="produto-preco">R$ 5,50/un</div>
+                                <div class="produto-qtd">(mínimo 1 un)</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="error-message" id="produtoError">Por favor, selecione o tipo de produto.</div>
+            </div>
+
+            <!-- Sabores dos Doces Gourmet -->
+            <div class="form-section" id="docesSection" style="display: none;">
+                <h3 class="section-title">Sabores dos Doces Gourmet <span class="required">*</span></h3>
+                <div class="options-grid">
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="doce1" name="saboresDoces" value="Beijinho">
+                        <label for="doce1" class="option-label">💋 Beijinho</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="doce2" name="saboresDoces" value="Sensação">
+                        <label for="doce2" class="option-label">✨ Sensação</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="doce3" name="saboresDoces" value="Brigadeiro">
+                        <label for="doce3" class="option-label">🍫 Brigadeiro</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="doce4" name="saboresDoces" value="Ninho">
+                        <label for="doce4" class="option-label">🥥 Ninho</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="doce5" name="saboresDoces" value="Cajuzinho">
+                        <label for="doce5" class="option-label">🥜 Cajuzinho</label>
+                    </div>
+                    <div class="option-card-checkbox">
+                        <input type="checkbox" id="doce6" name="saboresDoces" value="Casadinho">
+                        <label for="doce6" class="option-label">👫 Casadinho</label>
+                    </div>
+                </div>
+                <div class="error-message" id="docesError">Por favor, selecione pelo menos um sabor.</div>
+            </div>
+
+            <!-- Massa dos Cupcakes -->
+            <div class="form-section" id="massaSection" style="display: none;">
+                <h3 class="section-title">Massa dos Cupcakes <span class="required">*</span></h3>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <input type="radio" id="massa1" name="massa" value="Baunilha">
+                        <label for="massa1" class="option-label">🌟 Baunilha</label>
+                    </div>
+                    <div class="option-card">
+                        <input type="radio" id="massa2" name="massa" value="Chocolate">
+                        <label for="massa2" class="option-label">🍫 Chocolate</label>
+                    </div>
+                </div>
+                <div class="error-message" id="massaError">Por favor, selecione a massa.</div>
+            </div>
+
+            <!-- Quantidade dos Cupcakes -->
+            <div class="form-section" id="quantidadeSection" style="display: none;">
+                <h3 class="section-title">Quantidade de Cupcakes <span class="required">*</span></h3>
+                <div class="quantity-section">
+                    <div class="input-group">
+                        <label for="quantidade">Número de unidades:</label>
+                        <input type="number" id="quantidade" name="quantidade" min="1" max="100" placeholder="Digite a quantidade desejada">
+                        <small style="color: #666; font-size: 0.9rem; margin-top: 5px; display: block;">
+                            Preço será calculado automaticamente
+                        </small>
+                    </div>
+                </div>
+                <div class="error-message" id="quantidadeError">Por favor, informe a quantidade.</div>
+            </div>
+
+            <!-- Botão Adicionar ao Carrinho -->
+            <button type="button" class="add-to-cart-btn" id="addToCartBtn" onclick="addToCart()">
+                🛒 Adicionar ao Carrinho
+            </button>
+        </form>
+
+        <!-- Formulário Final -->
+        <form id="finalForm" style="display: none;">
+            <!-- Data para Retirada -->
+            <div class="form-section">
+                <h3 class="section-title">Data para Retirada <span class="required">*</span></h3>
+                <div class="input-group">
+                    <label for="data">Data de Retirada</label>
+                    <input type="date" id="data" name="data" required>
+                    <div class="error-message" id="dataError">Por favor, selecione uma data.</div>
+                </div>
+            </div>
+
+            <!-- Termos e Condições -->
+            <div class="form-section">
+                <div class="terms-section">
+                    <h3 class="section-title">📋 Termos e Condições</h3>
+                    <div class="terms-box">
+                        <p><strong>⚠️ IMPORTANTE:</strong></p>
+                        <p>• A encomenda só será confirmada mediante o pagamento de <strong>50% do valor total</strong> como sinal.</p>
+                        <p>• O restante (50%) deverá ser pago no momento da retirada.</p>
+                        <p>• Pedidos sem sinal não serão processados.</p>
+                        <p>• Cancelamentos devem ser feitos com pelo menos 24h de antecedência.</p>
+                    </div>
+                    
+                    <div class="terms-box">
+                        <p><strong>🚚 ENTREGA:</strong></p>
+                        <p>• <strong>Itapoã e Paranoá:</strong> Taxa de entrega R$ 7,00</p>
+                        <p>• <strong>Outras regiões:</strong> Taxa de entrega a combinar</p>
+                        <p>• Entregas mediante disponibilidade de horário</p>
+                    </div>
+                                
+                    <div class="checkbox-terms">
+                        <input type="checkbox" id="termos" name="termos" required>
+                        <label for="termos">
+                            <span class="required">*</span> Eu li e concordo com os termos e condições acima
+                        </label>
+                    </div>
+                    <div class="error-message" id="termosError">Você deve aceitar os termos e condições.</div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span id="submitButtonText">📱 Solicitar Pedido via WhatsApp - R$ 0,00</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Número do WhatsApp
+        const WHATSAPP_NUMBER = '5561991944143';
+
+        // Preços
+        const precos = {
+            'Doces Gourmet': 150,
+            'Cupcakes Tamanho M': 4.50,
+            'Cupcakes Tamanho G': 5.50
+        };
+
+        // Carrinho de compras
+        let cart = [];
+
+        function updateCartDisplay() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            const cartTotalDiv = document.getElementById('cartTotal');
+            const finalForm = document.getElementById('finalForm');
+            const submitButton = document.getElementById('submitButtonText');
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="empty-cart">Seu carrinho está vazio</div>';
+                cartTotalDiv.style.display = 'none';
+                finalForm.style.display = 'none';
+                return;
+            }
+
+            // Mostrar itens do carrinho
+            let cartHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                cartHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-details">${item.details}</div>
+                        </div>
+                        <div class="cart-item-price">R$ ${item.price.toFixed(2)}</div>
+                        <button class="remove-item-btn" onclick="removeFromCart(${index})">✕</button>
+                    </div>
+                `;
+                total += item.price;
+            });
+
+            cartItemsDiv.innerHTML = cartHTML;
+            cartTotalDiv.style.display = 'block';
+            cartTotalDiv.querySelector('.cart-total').textContent = `Total: R$ ${total.toFixed(2)}`;
+            
+            // Mostrar formulário final se há itens no carrinho
+            finalForm.style.display = 'block';
+            submitButton.textContent = `📱 Solicitar Pedido via WhatsApp - R$ ${total.toFixed(2)}`;
+        }
+
+        function addToCart() {
+            if (!validateProductForm()) {
+                return;
+            }
+
+            const produto = document.querySelector('input[name="produto"]:checked').value;
+            let item = {
+                name: '',
+                details: '',
+                price: 0
+            };
+
+            if (produto === 'Doces Gourmet') {
+                const sabores = [];
+                document.querySelectorAll('input[name="saboresDoces"]:checked').forEach(cb => {
+                    sabores.push(cb.value);
+                });
+                
+                item.name = 'Doces Gourmet (100 unidades)';
+                item.details = `Sabores: ${sabores.join(', ')}`;
+                item.price = precos[produto];
+            } else {
+                const massa = document.querySelector('input[name="massa"]:checked').value;
+                const quantidade = parseInt(document.getElementById('quantidade').value);
+                const precoUnitario = precos[produto];
+                
+                item.name = `${produto} - ${massa}`;
+                item.details = `${quantidade} unidades`;
+                item.price = precoUnitario * quantidade;
+            }
+
+            cart.push(item);
+            updateCartDisplay();
+            clearProductForm();
+            
+            // Mostrar mensagem de sucesso
+            alert('Produto adicionado ao carrinho! 🛒');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        function clearProductForm() {
+            // Limpar seleções
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+                const card = radio.closest('.option-card');
+                if (card) card.classList.remove('selected');
+            });
+
+            document.querySelectorAll('input[name="saboresDoces"]').forEach(cb => {
+                cb.checked = false;
+                cb.closest('.option-card-checkbox').classList.remove('selected');
+            });
+
+            document.getElementById('quantidade').value = '';
+
+            // Esconder seções
+            document.getElementById('docesSection').style.display = 'none';
+            document.getElementById('massaSection').style.display = 'none';
+            document.getElementById('quantidadeSection').style.display = 'none';
+        }
+
+        function validateProductForm() {
+            let isValid = true;
+            
+            // Validar produto
+            if (!document.querySelector('input[name="produto"]:checked')) {
+                document.getElementById('produtoError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('produtoError').style.display = 'none';
+            }
+
+            const produtoSelecionado = document.querySelector('input[name="produto"]:checked');
+            
+            if (produtoSelecionado) {
+                if (produtoSelecionado.value === 'Doces Gourmet') {
+                    // Validar sabores dos doces
+                    const saboresSelecionados = document.querySelectorAll('input[name="saboresDoces"]:checked');
+                    if (saboresSelecionados.length === 0) {
+                        document.getElementById('docesError').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('docesError').style.display = 'none';
+                    }
+                } else {
+                    // Validar massa para cupcakes
+                    if (!document.querySelector('input[name="massa"]:checked')) {
+                        document.getElementById('massaError').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('massaError').style.display = 'none';
+                    }
+
+                    // Validar quantidade para cupcakes
+                    const quantidade = parseInt(document.getElementById('quantidade').value);
+                    if (!quantidade || quantidade < 1) {
+                        document.getElementById('quantidadeError').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('quantidadeError').style.display = 'none';
+                    }
+                }
+            }
+            
+            return isValid;
+        }
+
+        function validateFinalForm() {
+            let isValid = true;
+            
+            // Validar se há itens no carrinho
+            if (cart.length === 0) {
+                alert('Adicione pelo menos um produto ao carrinho antes de finalizar!');
+                return false;
+            }
+            
+            // Validar data
+            const data = document.getElementById('data').value;
+            if (!data) {
+                document.getElementById('dataError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('dataError').style.display = 'none';
+            }
+            
+            // Validar termos
+            if (!document.getElementById('termos').checked) {
+                document.getElementById('termosError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('termosError').style.display = 'none';
+            }
+            
+            return isValid;
+        }
+
+        // Controlar exibição das seções baseado no produto selecionado
+        document.querySelectorAll('input[name="produto"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const docesSection = document.getElementById('docesSection');
+                const massaSection = document.getElementById('massaSection');
+                const quantidadeSection = document.getElementById('quantidadeSection');
+                
+                if (this.value === 'Doces Gourmet') {
+                    docesSection.style.display = 'block';
+                    massaSection.style.display = 'none';
+                    quantidadeSection.style.display = 'none';
+                    
+                    // Limpar seleções de cupcakes
+                    document.querySelectorAll('input[name="massa"]').forEach(m => m.checked = false);
+                    document.getElementById('quantidade').value = '';
+                } else {
+                    docesSection.style.display = 'none';
+                    massaSection.style.display = 'block';
+                    quantidadeSection.style.display = 'block';
+                    
+                    // Limpar seleções de doces
+                    document.querySelectorAll('input[name="saboresDoces"]').forEach(d => {
+                        d.checked = false;
+                        d.closest('.option-card-checkbox').classList.remove('selected');
+                    });
+                }
+            });
+        });
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Controle visual dos checkboxes de doces
+            document.querySelectorAll('input[name="saboresDoces"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        this.closest('.option-card-checkbox').classList.add('selected');
+                    } else {
+                        this.closest('.option-card-checkbox').classList.remove('selected');
+                    }
+                });
+            });
+
+            // Adicionar animações aos cards quando selecionados
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Remover animação de todos os cards do mesmo grupo
+                    const groupName = this.name;
+                    document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+                        const card = r.closest('.option-card');
+                        if (card) card.classList.remove('selected');
+                    });
+                    
+                    // Adicionar animação ao card selecionado
+                    const selectedCard = this.closest('.option-card');
+                    if (selectedCard) selectedCard.classList.add('selected');
+                });
+            });
+
+            updateCartDisplay();
+        });
+
+        // Submit do formulário final
+        document.getElementById('finalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateFinalForm()) {
+                return;
+            }
+
+            // Coletar dados
+            const data = document.getElementById('data').value;
+            
+            let mensagem = `🧁 *PEDIDO DE DOCES & CUPCAKES*\n\n`;
+            mensagem += `📋 *Itens do Pedido:*\n`;
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                mensagem += `${index + 1}. ${item.name}\n`;
+                mensagem += `   ${item.details}\n`;
+                mensagem += `   Valor: R$ ${item.price.toFixed(2)}\n\n`;
+                total += item.price;
+            });
+            
+            // Formatear data
+            let dataFormatada = data;
+            if (data) {
+                const dataObj = new Date(data + 'T00:00:00');
+                const dia = String(dataObj.getDate()).padStart(2, '0');
+                const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+                dataFormatada = `${dia}/${mes}`;
+            }
+
+            mensagem += `📅 *Retirada:*\n`;
+            mensagem += `• Data: ${dataFormatada}\n\n`;
+            
+            mensagem += `💰 *VALOR TOTAL: R$ ${total.toFixed(2)}*\n\n`;
+            mensagem += `💰 *IMPORTANTE:* Confirmo que li os termos e concordo com o pagamento de 50% de sinal para confirmação do pedido.\n\n`;
+            mensagem += `Gostaria de confirmar este pedido! 😊`;
+
+            // Codificar mensagem para URL
+            const mensagemCodificada = encodeURIComponent(mensagem);
+            
+            // Criar link do WhatsApp
+            const linkWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensagemCodificada}`;
+            
+            // Abrir WhatsApp
+            window.open(linkWhatsApp, '_blank');
+        });
+    </script>
+</body>
+</html>
