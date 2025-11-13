@@ -472,15 +472,17 @@
                     { id: 3, nome: 'Adicional', icone: '🎨', ordem: 5, obrigatorio: true }
                 ];
                 items = [
-                    { id: 1, grupoId: 1, nome: 'Chocolate', descricao: 'Massa fofinha de chocolate', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Chocolate' },
-                    { id: 2, grupoId: 1, nome: 'Baunilha', descricao: 'Massa clássica de baunilha', preco: 20, imagem: 'https://via.placeholder.com/200/F5DEB3/333?text=Baunilha' },
-                    { id: 3, grupoId: 2, nome: 'Brigadeiro', descricao: 'Cremoso brigadeiro gourmet', preco: 15, imagem: 'https://via.placeholder.com/200/4B3621/FFF?text=Brigadeiro' },
-                    { id: 4, grupoId: 2, nome: 'Doce de Leite', descricao: 'Doce de leite cremoso', preco: 12, imagem: 'https://via.placeholder.com/200/CD853F/FFF?text=Doce' },
-                    { id: 5, grupoId: 3, nome: 'Nutella', descricao: 'Recheio especial de Nutella', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Nutella' },
-                    { id: 6, grupoId: 3, nome: 'Pistache', descricao: 'Recheio especial de pistache', preco: 30, imagem: 'https://via.placeholder.com/200/90EE90/333?text=Pistache' },
-                    { id: 7, grupoId: 4, nome: 'Ganache', descricao: 'Chocolate meio amargo', preco: 18, imagem: 'https://via.placeholder.com/200/3D2817/FFF?text=Ganache' },
-                    { id: 8, grupoId: 4, nome: 'Chantilly', descricao: 'Chantilly tradicional', preco: 15, imagem: 'https://via.placeholder.com/200/FFFACD/333?text=Chantilly' },
-                    { id: 9, grupoId: 4, nome: 'Sem Cobertura', descricao: 'Apenas o bolo', preco: 0, imagem: 'https://via.placeholder.com/200/F0F0F0/999?text=Sem+Cobertura' }
+                    { id: 1, grupoId: 4, nome: '1 Kg', descricao: 'Bolo de 1 quilo', preco: 50, imagem: 'https://via.placeholder.com/200/FFD700/333?text=1+Kg' },
+                    { id: 2, grupoId: 4, nome: '2 Kg', descricao: 'Bolo de 2 quilos', preco: 90, imagem: 'https://via.placeholder.com/200/FFA500/333?text=2+Kg' },
+                    { id: 3, grupoId: 1, nome: 'Chocolate', descricao: 'Massa fofinha de chocolate', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Chocolate' },
+                    { id: 4, grupoId: 1, nome: 'Baunilha', descricao: 'Massa clássica de baunilha', preco: 20, imagem: 'https://via.placeholder.com/200/F5DEB3/333?text=Baunilha' },
+                    { id: 5, grupoId: 2, nome: 'Brigadeiro', descricao: 'Cremoso brigadeiro gourmet', preco: 15, imagem: 'https://via.placeholder.com/200/4B3621/FFF?text=Brigadeiro' },
+                    { id: 6, grupoId: 2, nome: 'Doce de Leite', descricao: 'Doce de leite cremoso', preco: 12, imagem: 'https://via.placeholder.com/200/CD853F/FFF?text=Doce' },
+                    { id: 7, grupoId: 5, nome: 'Nutella', descricao: 'Recheio especial de Nutella', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Nutella' },
+                    { id: 8, grupoId: 5, nome: 'Pistache', descricao: 'Recheio especial de pistache', preco: 30, imagem: 'https://via.placeholder.com/200/90EE90/333?text=Pistache' },
+                    { id: 9, grupoId: 3, nome: 'Ganache', descricao: 'Chocolate meio amargo', preco: 18, imagem: 'https://via.placeholder.com/200/3D2817/FFF?text=Ganache' },
+                    { id: 10, grupoId: 3, nome: 'Chantilly', descricao: 'Chantilly tradicional', preco: 15, imagem: 'https://via.placeholder.com/200/FFFACD/333?text=Chantilly' },
+                    { id: 11, grupoId: 3, nome: 'Sem Adicional', descricao: 'Sem adicional', preco: 0, imagem: 'https://via.placeholder.com/200/F0F0F0/999?text=Sem+Adicional' }
                 ];
             }
             WHATSAPP_NUMBER = localStorage.getItem('whatsappNumber') || '5561991944143';
@@ -668,7 +670,7 @@
                 return `
                     <div class="summary-item">
                         <div class="summary-label">${group.icone} ${group.nome}</div>
-                        <div class="summary-value">${item ? `${item.nome}${item.preco > 0 ? ' - R$ ' + item.preco.toFixed(2) : ''}` : '-'}</div>
+                        <div class="summary-value">${item ? item.nome + (item.preco > 0 ? ' - R$ ' + item.preco.toFixed(2) : '') : '-'}</div>
                     </div>
                 `;
             }).join('');
