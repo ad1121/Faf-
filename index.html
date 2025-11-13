@@ -513,14 +513,16 @@
             `;
             
             const stepContents = document.getElementById('stepContents');
-            stepContents.innerHTML = orderedGroups.map((group, index) => `
+            stepContents.innerHTML = orderedGroups.map((group, index) => {
+                const hasSelection = selections[group.id];
+                return `
                 <div id="step${index}" class="step-content ${index !== 0 ? 'hidden' : ''}">
                     <div class="section-header">
                         <h2 class="section-title">Escolha ${group.nome}</h2>
                         ${index > 0 ? '<button class="btn-back" onclick="goBack()">← Voltar</button>' : ''}
                     </div>
-                    ${!group.obrigatorio ? `
-                        <div style="text-align: center; margin-bottom: 1rem;">
+                    ${!group.obrigatorio && !hasSelection ? `
+                        <div style="text-align: center; margin-bottom: 1rem;" id="skipButton${index}">
                             <button class="btn-continue" onclick="skipStep()" style="background: #666; width: auto; padding: 0.75rem 1.5rem;">
                                 Pular esta etapa
                             </button>
@@ -528,7 +530,7 @@
                     ` : ''}
                     <div class="options-list" id="options${index}"></div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function renderClientOptions() {
@@ -571,6 +573,15 @@
             }
             
             selections[groupId] = item;
+            
+            // Ocultar botão "Pular" se o grupo for opcional e agora tem seleção
+            if (!currentGroup.obrigatorio) {
+                const skipButton = document.getElementById(`skipButton${stepIndex}`);
+                if (skipButton) {
+                    skipButton.style.display = 'none';
+                }
+            }
+            
             renderOptions(getItemsByGroup(groupId), `options${stepIndex}`, stepIndex, groupId);
             updateBottomBar();
         }
@@ -578,7 +589,7 @@
         function updateBottomBar() {
             let total = 0;
             Object.values(selections).forEach(item => {
-                if (item) total += item.preco;
+                if (item && item.preco) total += parseFloat(item.preco);
             });
             
             document.getElementById('totalPrice').textContent = `R$ ${total.toFixed(2)}`;
@@ -638,6 +649,14 @@
                 if (stepElement) {
                     stepElement.classList.toggle('hidden', index !== stepIndex);
                 }
+                
+                // Mostrar ou ocultar botão "Pular" baseado na seleção
+                if (!group.obrigatorio) {
+                    const skipButton = document.getElementById(`skipButton${index}`);
+                    if (skipButton) {
+                        skipButton.style.display = selections[group.id] ? 'none' : 'block';
+                    }
+                }
             });
             
             const steps = document.querySelectorAll('.progress-step');
@@ -677,7 +696,7 @@
             
             let total = 0;
             Object.values(selections).forEach(item => {
-                if (item) total += item.preco;
+                if (item && item.preco) total += parseFloat(item.preco);
             });
             
             document.getElementById('summaryTotal').textContent = `R$ ${total.toFixed(2)}`;
@@ -696,10 +715,10 @@
                     message += `${group.icone} *${group.nome}:* ${item.nome}\n`;
                     if (item.preco > 0) {
                         message += `   R$ ${item.preco.toFixed(2)}\n\n`;
+                        total += parseFloat(item.preco);
                     } else {
                         message += '\n';
                     }
-                    total += item.preco;
                 }
             });
             
