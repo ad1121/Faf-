@@ -1,876 +1,733 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bolos</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Monte seu Bolo - Fafa Bolos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f8f8;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: #fff;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: #ea1d2c;
+            font-family: 'Georgia', 'Palatino', serif;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .container {
+            padding: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 18px;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+
+        .progress-line-fill {
+            height: 100%;
+            background: #ea1d2c;
+            transition: width 0.3s;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: #999;
+            transition: all 0.3s;
+        }
+
+        .progress-step.active .step-circle {
+            background: #ea1d2c;
+            color: white;
+        }
+
+        .progress-step.completed .step-circle {
+            background: #00a65a;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .progress-step.active .step-label {
+            color: #ea1d2c;
+            font-weight: 600;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: #ea1d2c;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .option-item:active {
+            transform: scale(0.98);
+        }
+
+        .option-item.selected {
+            border-color: #ea1d2c;
+            background: #fff5f5;
+        }
+
+        .option-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .option-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .option-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-description {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-price {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #ea1d2c;
+        }
+
+        .option-radio {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .option-item.selected .option-radio {
+            border-color: #ea1d2c;
+            background: #ea1d2c;
+        }
+
+        .option-item.selected .option-radio::after {
+            content: '✓';
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.1);
+            z-index: 99;
+        }
+
+        .bottom-content {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .total-info {
+            flex: 1;
+        }
+
+        .total-label {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .btn-continue {
+            padding: 1rem 2rem;
+            background: #ea1d2c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .btn-continue:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-continue:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: flex-end;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .summary-item {
+            padding: 1rem;
+            background: #f8f8f8;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-label {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .payment-notice {
+            background: #fff3cd;
+            border-left: 4px solid #f39c12;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+            color: #856404;
+        }
+
+        .btn-whatsapp {
+            width: 100%;
+            padding: 1rem;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .step-content {
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="logo">
-          <h2>Portal Fafá Bolos</h2>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">🎂 Fafa Bolos</div>
         </div>
-        <ul class="nav-menu" id="nav-menu">
-          <li class="nav-item"><a href="#home" class="nav-link">Início</a></li>
-          <li class="nav-item"><a href="#about" class="nav-link">Sobre</a></li>
-          <li class="nav-item"><a href="#services" class="nav-link">Serviços</a></li>
-          <li class="nav-item"><a href="#contact" class="nav-link">Galeria</a></li>
-        </ul>
-        <div class="hamburger" id="hamburger">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </div>
-      </div>
-    </nav>
-  </header>
+    </header>
 
-  <!-- Hero Section -->
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <h1 class="hero-title">Bem-vindo ao cantinho Fafá Bolos</h1>
-      <p class="hero-description">Sua encomenda a poucos click´s</p>
-      <button class="cta-button" onclick="scrollToSection('services')">Faça seu pedido!</button>
-    </div>
-    <div class="hero-animation">
-      <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="about">
     <div class="container">
-      <h2 class="section-title">Sobre Nós</h2>
-      <div class="about-grid">
-        <div class="about-content">
-          <h3>Com carinho e sabor em cada fatia!</h3>
-          <p>Especializada em criar bolos frescos e deliciosos, preparados com os melhores ingredientes e muito amor. Nossa paixão pela confeitaria artesanal nos move a buscar sempre a perfeição em cada receita, combinando técnicas tradicionais com um toque especial que torna cada doce uma experiência única.
-Acreditamos que cada ocasião merece ser celebrada com sabores autênticos e momentos inesquecíveis. Por isso, cuidamos de cada detalhe, desde a seleção criteriosa dos ingredientes até a apresentação final, garantindo que nossos clientes recebam não apenas um produto, mas uma lembrança doce e especial.</p>
-          
-          </div>
+        <div id="clientPage">
+            <div class="progress-bar">
+                <div class="progress-steps" id="progressSteps"></div>
+            </div>
+            <div id="stepContents"></div>
         </div>
-      </div>
     </div>
-  </section>
 
-  <!-- Services Section -->
-  <section id="services" class="services">
-    <div class="container">
-      <h2 class="section-title">Nossos Serviços</h2>
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon">🎂</div>
-          <h3>Bolos Personalizados para Qualquer Ocasião</h3>
-          <p>Oferecemos uma variedade de bolos personalizados para casamentos, aniversários, festas corporativas, entre outros eventos. Cada bolo é elaborado com detalhes exclusivos para refletir a sua celebração.</p>
-          <button class="service-btn" onclick="efetuarPedido()" type="button">Efetuar Pedido</button>
+    <div class="bottom-bar" id="bottomBar">
+        <div class="bottom-content">
+            <div class="total-info">
+                <div class="total-label">Total</div>
+                <div class="total-price" id="totalPrice">R$ 0,00</div>
+            </div>
+            <button class="btn-continue" id="continueBtn" onclick="handleContinue()" disabled>Continuar</button>
         </div>
-        <div class="service-card">
-          <div class="service-icon">🍫</div>
-          <h3>Deliciosas Sobremesas para Encantar Seu Paladar</h3>
-          <p>Além dos bolos, oferecemos uma gama de sobremesas irresistíveis, como cupcakes, brigadeiros e tortas que são perfeitas para qualquer tipo de evento.</p>
-          <button class="service-btn2" onclick="efetuarPedidodoces()" type="button">Efetuar Pedido</button>
-        </div>
-      </div>
     </div>
-  </section>
 
-  <!-- Contact / Galeria Section -->
-  <section id="contact" class="contact">
-    <div class="container">
-      <h2 class="section-title">Galeria</h2>
-
-      <!-- Galeria Sofisticada -->
-      <div class="gallery-container">
-        <div class="gallery-grid">
-          <div class="gallery-item" onclick="abrirModal('assets/images/foto1.jpg', 0)">
-            <img src="assets/images/foto1.jpg" alt="Bolo Personalizado 1" loading="lazy">
-            <div class="gallery-overlay">
-              <div class="gallery-overlay-content">
-                <i class="zoom-icon">🔍</i>
-                <p>Ver Detalhes</p>
-              </div>
+    <div class="modal" id="summaryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Resumo do Pedido</h3>
+                <button class="close-btn" onclick="closeModal('summaryModal')">✕</button>
             </div>
-          </div>
-          
-          <div class="gallery-item" onclick="abrirModal('assets/images/foto2.jpg', 1)">
-            <img src="assets/images/foto2.jpg" alt="Bolo Personalizado 2" loading="lazy">
-            <div class="gallery-overlay">
-              <div class="gallery-overlay-content">
-                <i class="zoom-icon">🔍</i>
-                <p>Ver Detalhes</p>
-              </div>
+            <div id="summaryItems"></div>
+            <div class="payment-notice">
+                <strong>⚠️ Importante:</strong> Pagamento de 50% como sinal. O restante na entrega.
             </div>
-          </div>
-          
-          <div class="gallery-item" onclick="abrirModal('assets/images/foto3.jpg', 2)">
-            <img src="assets/images/foto3.jpg" alt="Bolo Personalizado 3" loading="lazy">
-            <div class="gallery-overlay">
-              <div class="gallery-overlay-content">
-                <i class="zoom-icon">🔍</i>
-                <p>Ver Detalhes</p>
-              </div>
+            <div style="text-align:center;margin:1rem 0">
+                <div style="font-size:0.875rem;color:#666">Valor Total</div>
+                <div style="font-size:2rem;font-weight:700;color:#ea1d2c" id="summaryTotal">R$ 0,00</div>
             </div>
-          </div>
-          
-          <!-- Adicione mais itens da galeria aqui conforme necessário -->
-          <div class="gallery-item" onclick="abrirModal('assets/images/foto1.jpg', 3)">
-            <img src="assets/images/foto1.jpg" alt="Bolo Personalizado 4" loading="lazy">
-            <div class="gallery-overlay">
-              <div class="gallery-overlay-content">
-                <i class="zoom-icon">🔍</i>
-                <p>Ver Detalhes</p>
-              </div>
-            </div>
-          </div>
-          
-          <div class="gallery-item" onclick="abrirModal('assets/images/foto2.jpg', 4)">
-            <img src="assets/images/foto2.jpg" alt="Bolo Personalizado 5" loading="lazy">
-            <div class="gallery-overlay">
-              <div class="gallery-overlay-content">
-                <i class="zoom-icon">🔍</i>
-                <p>Ver Detalhes</p>
-              </div>
-            </div>
-          </div>
-          
-          <div class="gallery-item" onclick="abrirModal('assets/images/foto3.jpg', 5)">
-            <img src="assets/images/foto3.jpg" alt="Bolo Personalizado 6" loading="lazy">
-            <div class="gallery-overlay">
-              <div class="gallery-overlay-content">
-                <i class="zoom-icon">🔍</i>
-                <p>Ver Detalhes</p>
-              </div>
-            </div>
-          </div>
+            <button class="btn-whatsapp" onclick="sendWhatsApp()">📱 Fazer Pedido pelo WhatsApp</button>
         </div>
-      </div>
-
-      <!-- Modal de Zoom Sofisticado -->
-      <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-container">
-          <button class="modal-close" onclick="fecharModal()" type="button" aria-label="Fechar modal">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-          
-          <button class="modal-nav prev" onclick="navegarModal(-1)" type="button" aria-label="Imagem anterior">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="15,18 9,12 15,6"></polyline>
-            </svg>
-          </button>
-          
-          <button class="modal-nav next" onclick="navegarModal(1)" type="button" aria-label="Próxima imagem">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="9,18 15,12 9,6"></polyline>
-            </svg>
-          </button>
-          
-          <div class="modal-content">
-            <img id="modalImage" src="" alt="" loading="lazy">
-            <div class="modal-info">
-              <h3 id="modalTitle">Bolo Personalizado</h3>
-              <p id="modalDescription">Nossos bolos são feitos com muito carinho e os melhores ingredientes.</p>
-            </div>
-          </div>
-          
-          <div class="modal-thumbnails">
-            <div class="thumbnails-container" id="thumbnailsContainer">
-              <!-- Thumbnails serão geradas dinamicamente -->
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>Links Rápidos</h4>
-          <ul>
-            <li><a href="#home">Início</a></li>
-            <li><a href="#about">Sobre</a></li>
-            <li><a href="#services">Serviços</a></li>
-            <li><a href="#contact">Galeria</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Redes Sociais</h4>
-          <div class="social-links">
-            <a href="https://www.instagram.com/fafa_bolos_/?igsh=ZnJ6M2RjMDlvc28x#" class="social-link">Instagram</a>
-            </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Portal Web. Todos os direitos reservados.</p>
-      </div>
-    </div>
-  </footer>
-
-  <style>
-    /* Galeria Sofisticada */
-    .gallery-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 0;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      padding: 1rem;
-    }
-
-    .gallery-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      background: #f8f9fa;
-    }
-
-    .gallery-item:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.1);
-    }
-
-    .gallery-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(255,107,107,0.9), rgba(255,165,0,0.9));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .gallery-item:hover .gallery-overlay {
-      opacity: 1;
-    }
-
-    .gallery-overlay-content {
-      text-align: center;
-      color: white;
-      transform: translateY(20px);
-      transition: transform 0.3s ease;
-    }
-
-    .gallery-item:hover .gallery-overlay-content {
-      transform: translateY(0);
-    }
-
-    .zoom-icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    .gallery-overlay-content p {
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    /* Modal Sofisticado */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      z-index: 9999;
-      backdrop-filter: blur(10px);
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
-      background: rgba(255,255,255,0.1);
-      border: 2px solid rgba(255,255,255,0.2);
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      z-index: 10001;
-    }
-
-    .modal-close:hover {
-      background: rgba(255,255,255,0.2);
-      transform: scale(1.1);
-    }
-
-    .modal-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.1);
-      border: 2px solid rgba(255,255,255,0.2);
-      color: white;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      z-index: 10001;
-    }
-
-    .modal-nav:hover {
-      background: rgba(255,255,255,0.2);
-      transform: translateY(-50%) scale(1.1);
-    }
-
-    .modal-nav.prev {
-      left: 2rem;
-    }
-
-    .modal-nav.next {
-      right: 2rem;
-    }
-
-    .modal-content {
-      max-width: 90%;
-      max-height: 80%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: modalSlideIn 0.4s ease;
-    }
-
-    .modal-content img {
-      max-width: 100%;
-      max-height: 70vh;
-      object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-    }
-
-    .modal-info {
-      text-align: center;
-      color: white;
-      margin-top: 1.5rem;
-      max-width: 600px;
-    }
-
-    .modal-info h3 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      color: #fff;
-    }
-
-    .modal-info p {
-      font-size: 1rem;
-      opacity: 0.9;
-      line-height: 1.6;
-    }
-
-    .modal-thumbnails {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10001;
-    }
-
-    .thumbnails-container {
-      display: flex;
-      gap: 0.5rem;
-      padding: 1rem;
-      background: rgba(255,255,255,0.1);
-      border-radius: 50px;
-      backdrop-filter: blur(10px);
-    }
-
-    .thumbnail {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
-      object-fit: cover;
-      cursor: pointer;
-      opacity: 0.6;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .thumbnail:hover,
-    .thumbnail.active {
-      opacity: 1;
-      border-color: #ff6b6b;
-      transform: scale(1.1);
-    }
-
-    /* Animações */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes modalSlideIn {
-      from { 
-        opacity: 0;
-        transform: scale(0.8) translateY(50px);
-      }
-      to { 
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-
-    /* Responsivo */
-    @media (max-width: 768px) {
-      .gallery-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        padding: 0.5rem;
-      }
-
-      .gallery-item {
-        border-radius: 12px;
-      }
-
-      .gallery-item img {
-        height: 150px;
-      }
-
-      .modal-container {
-        padding: 1rem;
-      }
-
-      .modal-close {
-        top: 1rem;
-        right: 1rem;
-        width: 40px;
-        height: 40px;
-      }
-
-      .modal-nav {
-        width: 50px;
-        height: 50px;
-      }
-
-      .modal-nav.prev {
-        left: 1rem;
-      }
-
-      .modal-nav.next {
-        right: 1rem;
-      }
-
-      .modal-content {
-        max-width: 95%;
-        max-height: 85%;
-      }
-
-      .modal-content img {
-        max-height: 60vh;
-      }
-
-      .modal-info h3 {
-        font-size: 1.2rem;
-      }
-
-      .modal-info p {
-        font-size: 0.9rem;
-      }
-
-      .thumbnails-container {
-        padding: 0.5rem;
-      }
-
-      .thumbnail {
-        width: 40px;
-        height: 40px;
-      }
-
-      .modal-thumbnails {
-        bottom: 1rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
-      }
-
-      .gallery-item img {
-        height: 120px;
-      }
-
-      .zoom-icon {
-        font-size: 2rem;
-      }
-
-      .gallery-overlay-content p {
-        font-size: 0.9rem;
-      }
-    }
-  </style>
-
-  <script>
-    // Variáveis globais da galeria
-    const galleryImages = [
-      {
-        src: 'assets/images/foto1.jpg',
-        title: 'Bolo Personalizado Premium',
-        description: 'Bolos únicos criados especialmente para sua ocasião especial.'
-      },
-      {
-        src: 'assets/images/foto2.jpg',
-        title: 'Deliciosas Sobremesas',
-        description: 'Sobremesas artesanais que encantam o paladar.'
-      },
-      {
-        src: 'assets/images/foto3.jpg',
-        title: 'Bolos para Eventos',
-        description: 'Perfeitos para casamentos, aniversários e celebrações.'
-      },
-      {
-        src: 'assets/images/foto1.jpg',
-        title: 'Design Exclusivo',
-        description: 'Cada bolo é uma obra de arte comestível.'
-      },
-      {
-        src: 'assets/images/foto2.jpg',
-        title: 'Sabores Especiais',
-        description: 'Combinações únicas de sabores que surpreendem.'
-      },
-      {
-        src: 'assets/images/foto3.jpg',
-        title: 'Entrega Personalizada',
-        description: 'Levamos seu bolo perfeito até você.'
-      }
-    ];
-
-    let currentModalIndex = 0;
-    let currentSlideIndex = 1;
-
-    // Menu hambúrguer
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('nav-menu');
-
-    if (hamburger && navMenu) {
-      hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-      });
-
-      // Fechar menu ao clicar em um link
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function() {
-          hamburger.classList.remove('active');
-          navMenu.classList.remove('active');
-        });
-      });
-    }
-
-    // Função para scroll suave
-    function scrollToSection(sectionId) {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    // Slider da seção About
-    function changeSlide(direction) {
-      const slides = document.querySelectorAll('.slide');
-      const indicators = document.querySelectorAll('.indicator');
-      
-      if (slides.length === 0) return;
-      
-      slides[currentSlideIndex - 1].classList.remove('active');
-      indicators[currentSlideIndex - 1].classList.remove('active');
-      
-      currentSlideIndex += direction;
-      
-      if (currentSlideIndex > slides.length) {
-        currentSlideIndex = 1;
-      }
-      if (currentSlideIndex < 1) {
-        currentSlideIndex = slides.length;
-      }
-      
-      slides[currentSlideIndex - 1].classList.add('active');
-      indicators[currentSlideIndex - 1].classList.add('active');
-    }
-
-    function currentSlide(n) {
-      const slides = document.querySelectorAll('.slide');
-      const indicators = document.querySelectorAll('.indicator');
-      
-      if (slides.length === 0) return;
-      
-      slides[currentSlideIndex - 1].classList.remove('active');
-      indicators[currentSlideIndex - 1].classList.remove('active');
-      
-      currentSlideIndex = n;
-      
-      slides[currentSlideIndex - 1].classList.add('active');
-      indicators[currentSlideIndex - 1].classList.add('active');
-    }
-
-    // Funções da galeria sofisticada
-    function abrirModal(imageSrc, index) {
-      currentModalIndex = index;
-      const modal = document.getElementById('modalOverlay');
-      const modalImage = document.getElementById('modalImage');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalDescription = document.getElementById('modalDescription');
-      
-      if (modal && modalImage) {
-        modal.style.display = 'block';
-        modalImage.src = imageSrc;
-        
-        // Atualizar informações
-        if (galleryImages[index]) {
-          modalTitle.textContent = galleryImages[index].title;
-          modalDescription.textContent = galleryImages[index].description;
-        }
-        
-        // Gerar thumbnails
-        gerarThumbnails();
-        
-        // Bloquear scroll do body
-        document.body.style.overflow = 'hidden';
-        
-        // Adicionar event listener para ESC
-        document.addEventListener('keydown', handleKeyPress);
-      }
-    }
-
-    function fecharModal() {
-      const modal = document.getElementById('modalOverlay');
-      if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-        document.removeEventListener('keydown', handleKeyPress);
-      }
-    }
-
-    function navegarModal(direction) {
-      currentModalIndex += direction;
-      
-      if (currentModalIndex >= galleryImages.length) {
-        currentModalIndex = 0;
-      }
-      if (currentModalIndex < 0) {
-        currentModalIndex = galleryImages.length - 1;
-      }
-      
-      const modalImage = document.getElementById('modalImage');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalDescription = document.getElementById('modalDescription');
-      
-      if (modalImage && galleryImages[currentModalIndex]) {
-        modalImage.src = galleryImages[currentModalIndex].src;
-        modalTitle.textContent = galleryImages[currentModalIndex].title;
-        modalDescription.textContent = galleryImages[currentModalIndex].description;
-        
-        // Atualizar thumbnails ativos
-        atualizarThumbnails();
-      }
-    }
-
-    function gerarThumbnails() {
-      const container = document.getElementById('thumbnailsContainer');
-      if (!container) return;
-      
-      container.innerHTML = '';
-      
-      galleryImages.forEach((image, index) => {
-        const thumbnail = document.createElement('img');
-        thumbnail.src = image.src;
-        thumbnail.className = 'thumbnail';
-        thumbnail.alt = `Thumbnail ${index + 1}`;
-        
-        if (index === currentModalIndex) {
-          thumbnail.classList.add('active');
-        }
-        
-        thumbnail.addEventListener('click', () => {
-          currentModalIndex = index;
-          const modalImage = document.getElementById('modalImage');
-          const modalTitle = document.getElementById('modalTitle');
-          const modalDescription = document.getElementById('modalDescription');
-          
-          modalImage.src = image.src;
-          modalTitle.textContent = image.title;
-          modalDescription.textContent = image.description;
-          
-          atualizarThumbnails();
-        });
-        
-        container.appendChild(thumbnail);
-      });
-    }
-
-    function atualizarThumbnails() {
-      const thumbnails = document.querySelectorAll('.thumbnail');
-      thumbnails.forEach((thumb, index) => {
-        thumb.classList.toggle('active', index === currentModalIndex);
-      });
-    }
-
-    function handleKeyPress(e) {
-      switch(e.key) {
-        case 'Escape':
-          fecharModal();
-          break;
-        case 'ArrowLeft':
-          navegarModal(-1);
-          break;
-        case 'ArrowRight':
-          navegarModal(1);
-          break;
-      }
-    }
-
-    function efetuarPedido() {
-  window.location.href = 'encomenda.html';
-}
-function efetuarPedidodoces() {
-  window.location.href = 'doces.html';
-}
-
-    // Event listeners para dispositivos móveis
-    document.addEventListener('DOMContentLoaded', function() {
-      // Touch events para os botões
-      const buttons = document.querySelectorAll('button, .indicator, .gallery-item');
-      buttons.forEach(button => {
-        button.addEventListener('touchstart', function(e) {
-          this.style.transform = 'scale(0.95)';
-        });
-        
-        button.addEventListener('touchend', function(e) {
-          this.style.transform = '';
-        });
-      });
-
-      // Swipe gestures para o modal
-      let startX = 0;
-      let startY = 0;
-      
-      const modal = document.getElementById('modalOverlay');
-      if (modal) {
-        modal.addEventListener('touchstart', function(e) {
-          startX = e.touches[0].clientX;
-          startY = e.touches[0].clientY;
-        });
-        
-        modal.addEventListener('touchend', function(e) {
-          const endX = e.changedTouches[0].clientX;
-          const endY = e.changedTouches[0].clientY;
-          
-          const diffX = startX - endX;
-          const diffY = startY - endY;
-          
-          // Se o movimento horizontal for maior que o vertical
-          if (Math.abs(diffX) > Math.abs(diffY)) {
-            if (Math.abs(diffX) > 50) { // Mínimo de 50px para considerar um swipe
-              if (diffX > 0) {
-                navegarModal(1); // Swipe left - próxima imagem
-              } else {
-                navegarModal(-1); // Swipe right - imagem anterior
-              }
+    <script>
+        let currentStepIndex = 0;
+        let groups = [];
+        let items = [];
+        let selections = {};
+        let WHATSAPP_NUMBER = '5561991944143';
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1sY4UdcXWEmLS-dvgKibR6s9TdFUdU_24L5qm0fuP2So/edit';
+
+        async function loadData() {
+            const synced = await syncWithSheet(true);
+            if (!synced) {
+                groups = [
+                    { id: 1, nome: 'Massas', icone: '🍰', ordem: 1 },
+                    { id: 2, nome: 'Recheios', icone: '🍓', ordem: 2 },
+                    { id: 3, nome: 'Coberturas', icone: '🎨', ordem: 3 }
+                ];
+                items = [
+                    { id: 1, grupoId: 1, nome: 'Chocolate', descricao: 'Massa fofinha de chocolate', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Chocolate' },
+                    { id: 2, grupoId: 1, nome: 'Baunilha', descricao: 'Massa clássica de baunilha', preco: 20, imagem: 'https://via.placeholder.com/200/F5DEB3/333?text=Baunilha' },
+                    { id: 3, grupoId: 2, nome: 'Brigadeiro', descricao: 'Cremoso brigadeiro gourmet', preco: 15, imagem: 'https://via.placeholder.com/200/4B3621/FFF?text=Brigadeiro' },
+                    { id: 4, grupoId: 2, nome: 'Doce de Leite', descricao: 'Doce de leite cremoso', preco: 12, imagem: 'https://via.placeholder.com/200/CD853F/FFF?text=Doce' },
+                    { id: 5, grupoId: 3, nome: 'Ganache', descricao: 'Chocolate meio amargo', preco: 18, imagem: 'https://via.placeholder.com/200/3D2817/FFF?text=Ganache' },
+                    { id: 6, grupoId: 3, nome: 'Chantilly', descricao: 'Chantilly tradicional', preco: 15, imagem: 'https://via.placeholder.com/200/FFFACD/333?text=Chantilly' }
+                ];
             }
-          }
-        });
-        
-        // Fechar modal clicando no overlay
-        modal.addEventListener('click', function(e) {
-          if (e.target === modal) {
-            fecharModal();
-          }
-        });
-      }
-    });
-
-    // Smooth scroll para links de navegação
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
+            WHATSAPP_NUMBER = localStorage.getItem('whatsappNumber') || '5561991944143';
         }
-      });
-    });
 
-    // Lazy loading para imagens da galeria
-    if ('IntersectionObserver' in window) {
-      const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            img.style.opacity = '1';
-            observer.unobserve(img);
-          }
-        });
-      });
+        function getGroupsByOrder() {
+            return groups.sort((a, b) => a.ordem - b.ordem);
+        }
 
-      document.querySelectorAll('.gallery-item img').forEach(img => {
-        img.style.opacity = '0';
-        img.style.transition = 'opacity 0.3s ease';
-        imageObserver.observe(img);
-      });
-    }
-  </script>
+        function getItemsByGroup(groupId) {
+            return items.filter(item => item.grupoId === groupId);
+        }
+
+        function buildClientInterface() {
+            const orderedGroups = getGroupsByOrder();
+            const progressSteps = document.getElementById('progressSteps');
+            
+            progressSteps.innerHTML = `
+                <div class="progress-line">
+                    <div class="progress-line-fill" id="progressFill" style="width:0%"></div>
+                </div>
+                ${orderedGroups.map((group, index) => `
+                    <div class="progress-step ${index === 0 ? 'active' : ''}" data-step="${index}">
+                        <div class="step-circle">${index + 1}</div>
+                        <div class="step-label">${group.nome}</div>
+                    </div>
+                `).join('')}
+            `;
+            
+            const stepContents = document.getElementById('stepContents');
+            stepContents.innerHTML = orderedGroups.map((group, index) => `
+                <div id="step${index}" class="step-content ${index !== 0 ? 'hidden' : ''}">
+                    <div class="section-header">
+                        <h2 class="section-title">Escolha ${group.nome}</h2>
+                        ${index > 0 ? '<button class="btn-back" onclick="goBack()">← Voltar</button>' : ''}
+                    </div>
+                    <div class="options-list" id="options${index}"></div>
+                </div>
+            `).join('');
+        }
+
+        function renderClientOptions() {
+            getGroupsByOrder().forEach((group, index) => {
+                renderOptions(getItemsByGroup(group.id), `options${index}`, index, group.id);
+            });
+        }
+
+        function renderOptions(itemsList, containerId, stepIndex, groupId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const selected = selections[groupId];
+            
+            container.innerHTML = itemsList.length > 0 ? itemsList.map(item => `
+                <div class="option-item ${selected?.id === item.id ? 'selected' : ''}" 
+                     onclick="selectItem(${groupId}, ${item.id}, ${stepIndex})">
+                    <img src="${item.imagem}" alt="${item.nome}" class="option-image" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2260%22%3E🖼️%3C/text%3E%3C/svg%3E'">
+                    <div class="option-info">
+                        <div class="option-name">${item.nome}</div>
+                        <div class="option-description">${item.descricao}</div>
+                        <div class="option-price">R$ ${item.preco.toFixed(2)}</div>
+                    </div>
+                    <div class="option-radio"></div>
+                </div>
+            `).join('') : '<div class="loading">Nenhum item disponível</div>';
+        }
+
+        function selectItem(groupId, itemId, stepIndex) {
+            const item = items.find(i => i.id === itemId);
+            selections[groupId] = item;
+            renderOptions(getItemsByGroup(groupId), `options${stepIndex}`, stepIndex, groupId);
+            updateBottomBar();
+        }
+
+        function updateBottomBar() {
+            let total = 0;
+            Object.values(selections).forEach(item => {
+                if (item) total += item.preco;
+            });
+            
+            document.getElementById('totalPrice').textContent = `R$ ${total.toFixed(2)}`;
+            
+            const continueBtn = document.getElementById('continueBtn');
+            const orderedGroups = getGroupsByOrder();
+            const currentGroup = orderedGroups[currentStepIndex];
+            
+            if (currentGroup && selections[currentGroup.id]) {
+                continueBtn.disabled = false;
+                if (currentStepIndex === orderedGroups.length - 1) {
+                    continueBtn.textContent = 'Ver Resumo';
+                } else {
+                    continueBtn.textContent = 'Continuar';
+                }
+            } else {
+                continueBtn.disabled = true;
+            }
+        }
+
+        function handleContinue() {
+            const orderedGroups = getGroupsByOrder();
+            if (currentStepIndex < orderedGroups.length - 1) {
+                currentStepIndex++;
+                showStepContent(currentStepIndex);
+            } else {
+                showSummary();
+            }
+        }
+
+        function goBack() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                showStepContent(currentStepIndex);
+            }
+        }
+
+        function showStepContent(stepIndex) {
+            currentStepIndex = stepIndex;
+            const orderedGroups = getGroupsByOrder();
+            
+            orderedGroups.forEach((group, index) => {
+                const stepElement = document.getElementById(`step${index}`);
+                if (stepElement) {
+                    stepElement.classList.toggle('hidden', index !== stepIndex);
+                }
+            });
+            
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((s, index) => {
+                s.classList.remove('active', 'completed');
+                if (index === stepIndex) {
+                    s.classList.add('active');
+                } else if (index < stepIndex) {
+                    s.classList.add('completed');
+                }
+            });
+            
+            const progress = orderedGroups.length > 1 ? (stepIndex / (orderedGroups.length - 1)) * 100 : 0;
+            const progressFill = document.getElementById('progressFill');
+            if (progressFill) {
+                progressFill.style.width = progress + '%';
+            }
+            
+            updateBottomBar();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showSummary() {
+            const orderedGroups = getGroupsByOrder();
+            const summaryItems = document.getElementById('summaryItems');
+            
+            summaryItems.innerHTML = orderedGroups.map(group => {
+                const item = selections[group.id];
+                return `
+                    <div class="summary-item">
+                        <div class="summary-label">${group.icone} ${group.nome}</div>
+                        <div class="summary-value">${item ? `${item.nome} - R$ ${item.preco.toFixed(2)}` : '-'}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            let total = 0;
+            Object.values(selections).forEach(item => {
+                if (item) total += item.preco;
+            });
+            
+            document.getElementById('summaryTotal').textContent = `R$ ${total.toFixed(2)}`;
+            document.getElementById('summaryModal').classList.add('active');
+        }
+
+        function sendWhatsApp() {
+            let total = 0;
+            let message = '🎂 *Novo Pedido - Fafa Bolos*\n\n';
+            message += '*MEU BOLO PERSONALIZADO:*\n\n';
+            
+            const orderedGroups = getGroupsByOrder();
+            orderedGroups.forEach(group => {
+                const item = selections[group.id];
+                if (item) {
+                    message += `${group.icone} *${group.nome}:* ${item.nome}\n`;
+                    message += `   R$ ${item.preco.toFixed(2)}\n\n`;
+                    total += item.preco;
+                }
+            });
+            
+            const sinal = total * 0.5;
+            message += `━━━━━━━━━━━━━━━━━━\n`;
+            message += `💰 *VALOR TOTAL: R$ ${total.toFixed(2)}*\n\n`;
+            message += `⚠️ *IMPORTANTE:*\n`;
+            message += `📌 Sinal de 50%: *R$ ${sinal.toFixed(2)}*\n`;
+            message += `📌 Restante na entrega: R$ ${(total - sinal).toFixed(2)}`;
+
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        async function syncWithSheet(silent = false) {
+            try {
+                const sheetId = SHEET_URL.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/)?.[1];
+                if (!sheetId) return false;
+
+                const gruposUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Grupos`;
+                const itensUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Itens`;
+
+                const gruposResponse = await fetch(gruposUrl);
+                const gruposText = await gruposResponse.text();
+                const gruposJson = JSON.parse(gruposText.substring(47).slice(0, -2));
+
+                const itensResponse = await fetch(itensUrl);
+                const itensText = await itensResponse.text();
+                const itensJson = JSON.parse(itensText.substring(47).slice(0, -2));
+
+                groups = gruposJson.table.rows.map(row => ({
+                    id: parseInt(row.c[0]?.v || 0),
+                    nome: row.c[1]?.v || '',
+                    icone: row.c[2]?.v || '📦',
+                    ordem: parseInt(row.c[3]?.v || 1)
+                })).filter(g => g.id > 0);
+
+                items = itensJson.table.rows.map(row => ({
+                    id: parseInt(row.c[0]?.v || 0),
+                    grupoId: parseInt(row.c[1]?.v || 0),
+                    nome: row.c[2]?.v || '',
+                    descricao: row.c[3]?.v || '',
+                    preco: parseFloat(row.c[4]?.v || 0),
+                    imagem: row.c[5]?.v || ''
+                })).filter(i => i.id > 0);
+
+                buildClientInterface();
+                renderClientOptions();
+
+                return true;
+            } catch (error) {
+                console.error('Erro na sincronização:', error);
+                return false;
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        };
+
+        (async function init() {
+            await loadData();
+            buildClientInterface();
+            renderClientOptions();
+        })();
+    </script>
 </body>
 </html>
