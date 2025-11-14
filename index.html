@@ -59,17 +59,16 @@
 
         .progress-steps {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
             position: relative;
-            min-height: 70px;
         }
 
         .progress-line {
             position: absolute;
             top: 18px;
-            left: 20%;
-            right: 20%;
+            left: 40px;
+            right: 40px;
             height: 2px;
             background: #e0e0e0;
             z-index: 0;
@@ -88,16 +87,13 @@
             gap: 0.5rem;
             position: relative;
             z-index: 1;
-            flex: 1;
-            max-width: 80px;
         }
 
         .step-circle {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: #fff;
-            border: 2px solid #e0e0e0;
+            background: #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -105,27 +101,22 @@
             font-size: 0.875rem;
             color: #999;
             transition: all 0.3s;
-            flex-shrink: 0;
         }
 
         .progress-step.active .step-circle {
             background: #ea1d2c;
             color: white;
-            border-color: #ea1d2c;
         }
 
         .progress-step.completed .step-circle {
             background: #00a65a;
             color: white;
-            border-color: #00a65a;
         }
 
         .step-label {
             font-size: 0.75rem;
             color: #666;
             font-weight: 500;
-            text-align: center;
-            word-break: break-word;
         }
 
         .progress-step.active .step-label {
@@ -191,12 +182,6 @@
             border-radius: 8px;
             object-fit: cover;
             flex-shrink: 0;
-            cursor: zoom-in;
-            transition: all 0.2s;
-        }
-
-        .option-image:hover {
-            opacity: 0.8;
         }
 
         .option-info {
@@ -429,51 +414,52 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0,0,0,0.9);
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            cursor: zoom-out;
+            padding: 1rem;
         }
 
         .image-preview-modal.active {
             display: flex;
         }
 
-        .image-preview-modal img {
+        .image-preview-content {
             max-width: 90%;
-            max-height: 90%;
+            max-height: 90vh;
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            animation: zoomIn 0.3s;
-        }
-
-        @keyframes zoomIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            position: relative;
         }
 
         .image-preview-close {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.9);
+            top: -40px;
+            right: 0;
+            background: none;
             border: none;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            color: #333;
+            color: white;
+            font-size: 2rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
+            padding: 0.5rem;
+            z-index: 2001;
         }
 
-        .image-preview-close:hover {
-            background: white;
-            transform: scale(1.1);
+        .summary-item-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .summary-name {
+            flex: 1;
+        }
+
+        .summary-price {
+            font-weight: 700;
+            color: #ea1d2c;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -521,9 +507,9 @@
         </div>
     </div>
 
-    <div class="image-preview-modal" id="imagePreview" onclick="closeImagePreview()">
-        <button class="image-preview-close" onclick="closeImagePreview()">✕</button>
-        <img id="previewImage" src="" alt="Pré-visualização">
+    <div class="image-preview-modal" id="imagePreviewModal" onclick="closeImagePreview(event)">
+        <button class="image-preview-close" onclick="closeImagePreview(event)">✕</button>
+        <img id="previewImage" class="image-preview-content" src="" alt="Preview">
     </div>
 
     <script>
@@ -533,22 +519,30 @@
         let selections = {};
         let WHATSAPP_NUMBER = '5561991944143';
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1sY4UdcXWEmLS-dvgKibR6s9TdFUdU_24L5qm0fuP2So/edit';
+        let groupRelationships = {}; // Para rastrear grupos relacionados (ex: tradicional e especial)
 
         async function loadData() {
             const synced = await syncWithSheet(true);
             if (!synced) {
                 groups = [
-                    { id: 1, nome: 'Massas', icone: '🍰', ordem: 1 },
-                    { id: 2, nome: 'Recheios', icone: '🍓', ordem: 2 },
-                    { id: 3, nome: 'Coberturas', icone: '🎨', ordem: 3 }
+                    { id: 4, nome: 'Kg do Bolo', icone: '⚖️', ordem: 1, obrigatorio: true },
+                    { id: 1, nome: 'Massas', icone: '🍰', ordem: 2, obrigatorio: true },
+                    { id: 2, nome: 'Recheios Tradicionais', icone: '🍓', ordem: 3, obrigatorio: true, grupoAlternativo: 5 },
+                    { id: 5, nome: 'Recheios Especiais', icone: '✨', ordem: 4, obrigatorio: false, grupoAlternativo: 2 },
+                    { id: 3, nome: 'Adicional', icone: '🎨', ordem: 5, obrigatorio: true }
                 ];
                 items = [
-                    { id: 1, grupoId: 1, nome: 'Chocolate', descricao: 'Massa fofinha de chocolate', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Chocolate' },
-                    { id: 2, grupoId: 1, nome: 'Baunilha', descricao: 'Massa clássica de baunilha', preco: 20, imagem: 'https://via.placeholder.com/200/F5DEB3/333?text=Baunilha' },
-                    { id: 3, grupoId: 2, nome: 'Brigadeiro', descricao: 'Cremoso brigadeiro gourmet', preco: 15, imagem: 'https://via.placeholder.com/200/4B3621/FFF?text=Brigadeiro' },
-                    { id: 4, grupoId: 2, nome: 'Doce de Leite', descricao: 'Doce de leite cremoso', preco: 12, imagem: 'https://via.placeholder.com/200/CD853F/FFF?text=Doce' },
-                    { id: 5, grupoId: 3, nome: 'Ganache', descricao: 'Chocolate meio amargo', preco: 18, imagem: 'https://via.placeholder.com/200/3D2817/FFF?text=Ganache' },
-                    { id: 6, grupoId: 3, nome: 'Chantilly', descricao: 'Chantilly tradicional', preco: 15, imagem: 'https://via.placeholder.com/200/FFFACD/333?text=Chantilly' }
+                    { id: 1, grupoId: 4, nome: '1 Kg', descricao: 'Bolo de 1 quilo', preco: 50, imagem: 'https://via.placeholder.com/200/FFD700/333?text=1+Kg' },
+                    { id: 2, grupoId: 4, nome: '2 Kg', descricao: 'Bolo de 2 quilos', preco: 90, imagem: 'https://via.placeholder.com/200/FFA500/333?text=2+Kg' },
+                    { id: 3, grupoId: 1, nome: 'Chocolate', descricao: 'Massa fofinha de chocolate', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Chocolate' },
+                    { id: 4, grupoId: 1, nome: 'Baunilha', descricao: 'Massa clássica de baunilha', preco: 20, imagem: 'https://via.placeholder.com/200/F5DEB3/333?text=Baunilha' },
+                    { id: 5, grupoId: 2, nome: 'Brigadeiro', descricao: 'Cremoso brigadeiro gourmet', preco: 15, imagem: 'https://via.placeholder.com/200/4B3621/FFF?text=Brigadeiro' },
+                    { id: 6, grupoId: 2, nome: 'Doce de Leite', descricao: 'Doce de leite cremoso', preco: 12, imagem: 'https://via.placeholder.com/200/CD853F/FFF?text=Doce' },
+                    { id: 7, grupoId: 5, nome: 'Nutella', descricao: 'Recheio especial de Nutella', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Nutella' },
+                    { id: 8, grupoId: 5, nome: 'Pistache', descricao: 'Recheio especial de pistache', preco: 30, imagem: 'https://via.placeholder.com/200/90EE90/333?text=Pistache' },
+                    { id: 9, grupoId: 3, nome: 'Ganache', descricao: 'Chocolate meio amargo', preco: 18, imagem: 'https://via.placeholder.com/200/3D2817/FFF?text=Ganache' },
+                    { id: 10, grupoId: 3, nome: 'Chantilly', descricao: 'Chantilly tradicional', preco: 15, imagem: 'https://via.placeholder.com/200/FFFACD/333?text=Chantilly' },
+                    { id: 11, grupoId: 3, nome: 'Sem Adicional', descricao: 'Sem adicional', preco: 0, imagem: 'https://via.placeholder.com/200/F0F0F0/999?text=Sem+Adicional' }
                 ];
             }
             WHATSAPP_NUMBER = localStorage.getItem('whatsappNumber') || '5561991944143';
@@ -579,15 +573,24 @@
             `;
             
             const stepContents = document.getElementById('stepContents');
-            stepContents.innerHTML = orderedGroups.map((group, index) => `
+            stepContents.innerHTML = orderedGroups.map((group, index) => {
+                const hasSelection = selections[group.id];
+                return `
                 <div id="step${index}" class="step-content ${index !== 0 ? 'hidden' : ''}">
                     <div class="section-header">
                         <h2 class="section-title">Escolha ${group.nome}</h2>
                         ${index > 0 ? '<button class="btn-back" onclick="goBack()">← Voltar</button>' : ''}
                     </div>
+                    ${!group.obrigatorio && !hasSelection ? `
+                        <div style="text-align: center; margin-bottom: 1rem;" id="skipButton${index}">
+                            <button class="btn-continue" onclick="skipStep()" style="background: #666; width: auto; padding: 0.75rem 1.5rem;">
+                                Pular esta etapa
+                            </button>
+                        </div>
+                    ` : ''}
                     <div class="options-list" id="options${index}"></div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function renderClientOptions() {
@@ -605,15 +608,14 @@
             container.innerHTML = itemsList.length > 0 ? itemsList.map(item => `
                 <div class="option-item ${selected?.id === item.id ? 'selected' : ''}" 
                      onclick="selectItem(${groupId}, ${item.id}, ${stepIndex})">
-                    <img src="${item.imagem}" 
-                         alt="${item.nome}" 
-                         class="option-image" 
-                         onclick="event.stopPropagation(); showImagePreview('${item.imagem}')"
+                    <img src="${item.imagem}" alt="${item.nome}" class="option-image" 
+                         onclick="event.stopPropagation(); openImagePreview('${item.imagem.replace(/'/g, "\\'")}', '${item.nome.replace(/'/g, "\\'")}')"
+                         style="cursor: zoom-in;"
                          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2260%22%3E🖼️%3C/text%3E%3C/svg%3E'">
                     <div class="option-info">
                         <div class="option-name">${item.nome}</div>
                         <div class="option-description">${item.descricao}</div>
-                        <div class="option-price">R$ ${item.preco.toFixed(2)}</div>
+                        ${item.preco > 0 ? `<div class="option-price">R$ ${item.preco.toFixed(2)}</div>` : ''}
                     </div>
                     <div class="option-radio"></div>
                 </div>
@@ -622,7 +624,26 @@
 
         function selectItem(groupId, itemId, stepIndex) {
             const item = items.find(i => i.id === itemId);
+            const currentGroup = groups.find(g => g.id === groupId);
+            
+            // Se o grupo atual tem um grupo alternativo, desmarcar seleção do grupo alternativo
+            if (currentGroup && currentGroup.grupoAlternativo) {
+                const altGroupId = currentGroup.grupoAlternativo;
+                if (selections[altGroupId]) {
+                    delete selections[altGroupId];
+                }
+            }
+            
             selections[groupId] = item;
+            
+            // Ocultar botão "Pular" se o grupo for opcional e agora tem seleção
+            if (!currentGroup.obrigatorio) {
+                const skipButton = document.getElementById(`skipButton${stepIndex}`);
+                if (skipButton) {
+                    skipButton.style.display = 'none';
+                }
+            }
+            
             renderOptions(getItemsByGroup(groupId), `options${stepIndex}`, stepIndex, groupId);
             updateBottomBar();
         }
@@ -630,7 +651,7 @@
         function updateBottomBar() {
             let total = 0;
             Object.values(selections).forEach(item => {
-                if (item) total += item.preco;
+                if (item && item.preco) total += parseFloat(item.preco);
             });
             
             document.getElementById('totalPrice').textContent = `R$ ${total.toFixed(2)}`;
@@ -639,7 +660,8 @@
             const orderedGroups = getGroupsByOrder();
             const currentGroup = orderedGroups[currentStepIndex];
             
-            if (currentGroup && selections[currentGroup.id]) {
+            // Permitir continuar se: grupo não é obrigatório OU tem seleção
+            if (currentGroup && (!currentGroup.obrigatorio || selections[currentGroup.id])) {
                 continueBtn.disabled = false;
                 if (currentStepIndex === orderedGroups.length - 1) {
                     continueBtn.textContent = 'Ver Resumo';
@@ -649,6 +671,18 @@
             } else {
                 continueBtn.disabled = true;
             }
+        }
+
+        function skipStep() {
+            const orderedGroups = getGroupsByOrder();
+            const currentGroup = orderedGroups[currentStepIndex];
+            
+            // Remover seleção do grupo atual se existir
+            if (currentGroup && selections[currentGroup.id]) {
+                delete selections[currentGroup.id];
+            }
+            
+            handleContinue();
         }
 
         function handleContinue() {
@@ -676,6 +710,14 @@
                 const stepElement = document.getElementById(`step${index}`);
                 if (stepElement) {
                     stepElement.classList.toggle('hidden', index !== stepIndex);
+                }
+                
+                // Mostrar ou ocultar botão "Pular" baseado na seleção
+                if (!group.obrigatorio) {
+                    const skipButton = document.getElementById(`skipButton${index}`);
+                    if (skipButton) {
+                        skipButton.style.display = selections[group.id] ? 'none' : 'block';
+                    }
                 }
             });
             
@@ -705,17 +747,21 @@
             
             summaryItems.innerHTML = orderedGroups.map(group => {
                 const item = selections[group.id];
+                if (!item && !group.obrigatorio) return ''; // Não mostrar grupos opcionais não selecionados
                 return `
                     <div class="summary-item">
                         <div class="summary-label">${group.icone} ${group.nome}</div>
-                        <div class="summary-value">${item ? `${item.nome} - R$ ${item.preco.toFixed(2)}` : '-'}</div>
+                        <div class="summary-item-content">
+                            <div class="summary-name">${item ? item.nome : '-'}</div>
+                            ${item && item.preco > 0 ? `<div class="summary-price">R$ ${item.preco.toFixed(2)}</div>` : ''}
+                        </div>
                     </div>
                 `;
             }).join('');
             
             let total = 0;
             Object.values(selections).forEach(item => {
-                if (item) total += item.preco;
+                if (item && item.preco) total += parseFloat(item.preco);
             });
             
             document.getElementById('summaryTotal').textContent = `R$ ${total.toFixed(2)}`;
@@ -732,8 +778,12 @@
                 const item = selections[group.id];
                 if (item) {
                     message += `${group.icone} *${group.nome}:* ${item.nome}\n`;
-                    message += `   R$ ${item.preco.toFixed(2)}\n\n`;
-                    total += item.preco;
+                    if (item.preco > 0) {
+                        message += `   R$ ${item.preco.toFixed(2)}\n\n`;
+                        total += parseFloat(item.preco);
+                    } else {
+                        message += '\n';
+                    }
                 }
             });
             
@@ -768,7 +818,9 @@
                     id: parseInt(row.c[0]?.v || 0),
                     nome: row.c[1]?.v || '',
                     icone: row.c[2]?.v || '📦',
-                    ordem: parseInt(row.c[3]?.v || 1)
+                    ordem: parseInt(row.c[3]?.v || 1),
+                    obrigatorio: row.c[4]?.v !== false, // Coluna E: obrigatório (padrão true)
+                    grupoAlternativo: parseInt(row.c[5]?.v || 0) || null // Coluna F: ID do grupo alternativo
                 })).filter(g => g.id > 0);
 
                 items = itensJson.table.rows.map(row => ({
@@ -790,19 +842,25 @@
             }
         }
 
-        function showImagePreview(imageUrl) {
-            document.getElementById('previewImage').src = imageUrl;
-            document.getElementById('imagePreview').classList.add('active');
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function openImagePreview(imageUrl, imageName) {
+            const modal = document.getElementById('imagePreviewModal');
+            const img = document.getElementById('previewImage');
+            img.src = imageUrl;
+            img.alt = imageName;
+            modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeImagePreview() {
-            document.getElementById('imagePreview').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+        function closeImagePreview(event) {
+            if (event.target.id === 'imagePreviewModal' || event.target.classList.contains('image-preview-close')) {
+                const modal = document.getElementById('imagePreviewModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         }
 
         window.onclick = function(event) {
