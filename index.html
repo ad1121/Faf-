@@ -17,6 +17,7 @@
             background: #f8f8f8;
             min-height: 100vh;
             padding-bottom: 80px;
+            transition: background 0.3s, color 0.3s;
         }
 
         .header {
@@ -26,12 +27,15 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: background 0.3s;
         }
 
         .header-content {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .logo {
@@ -41,6 +45,25 @@
             font-family: 'Georgia', 'Palatino', serif;
             letter-spacing: 0.5px;
             text-align: center;
+            flex: 1;
+            transition: color 0.3s;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(234, 29, 44, 0.1);
         }
 
         .container {
@@ -55,6 +78,7 @@
             border-radius: 12px;
             margin-bottom: 1rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: background 0.3s, box-shadow 0.3s;
         }
 
         .progress-steps {
@@ -72,12 +96,13 @@
             height: 2px;
             background: #e0e0e0;
             z-index: 0;
+            transition: background 0.3s;
         }
 
         .progress-line-fill {
             height: 100%;
             background: #ea1d2c;
-            transition: width 0.3s;
+            transition: width 0.3s, background 0.3s;
         }
 
         .progress-step {
@@ -87,6 +112,7 @@
             gap: 0.5rem;
             position: relative;
             z-index: 1;
+            min-width: 60px;
         }
 
         .step-circle {
@@ -114,9 +140,16 @@
         }
 
         .step-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #666;
             font-weight: 500;
+            text-align: center;
+            min-height: 2.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+            transition: color 0.3s;
         }
 
         .progress-step.active .step-label {
@@ -135,6 +168,7 @@
             font-size: 1.25rem;
             font-weight: 700;
             color: #333;
+            transition: color 0.3s;
         }
 
         .btn-back {
@@ -147,6 +181,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: color 0.3s;
         }
 
         .options-list {
@@ -196,18 +231,21 @@
             font-weight: 600;
             color: #333;
             margin-bottom: 0.25rem;
+            transition: color 0.3s;
         }
 
         .option-description {
             font-size: 0.875rem;
             color: #666;
             margin-bottom: 0.5rem;
+            transition: color 0.3s;
         }
 
         .option-price {
             font-size: 1.125rem;
             font-weight: 700;
             color: #ea1d2c;
+            transition: color 0.3s;
         }
 
         .option-radio {
@@ -243,6 +281,7 @@
             padding: 1rem;
             box-shadow: 0 -2px 12px rgba(0,0,0,0.1);
             z-index: 99;
+            transition: background 0.3s, box-shadow 0.3s;
         }
 
         .bottom-content {
@@ -261,12 +300,14 @@
             font-size: 0.75rem;
             color: #666;
             margin-bottom: 0.25rem;
+            transition: color 0.3s;
         }
 
         .total-price {
             font-size: 1.5rem;
             font-weight: 700;
             color: #333;
+            transition: color 0.3s;
         }
 
         .btn-continue {
@@ -301,6 +342,7 @@
             background: rgba(0,0,0,0.5);
             z-index: 1000;
             align-items: flex-end;
+            transition: background 0.3s;
         }
 
         .modal.active {
@@ -315,6 +357,7 @@
             max-height: 90vh;
             overflow-y: auto;
             animation: slideUp 0.3s;
+            transition: background 0.3s;
         }
 
         @keyframes slideUp {
@@ -332,6 +375,7 @@
         .modal-title {
             font-size: 1.25rem;
             font-weight: 700;
+            transition: color 0.3s;
         }
 
         .close-btn {
@@ -341,6 +385,7 @@
             color: #666;
             cursor: pointer;
             padding: 0.5rem;
+            transition: color 0.3s;
         }
 
         .summary-item {
@@ -348,18 +393,21 @@
             background: #f8f8f8;
             border-radius: 8px;
             margin-bottom: 0.75rem;
+            transition: background 0.3s;
         }
 
         .summary-label {
             font-size: 0.875rem;
             color: #666;
             margin-bottom: 0.25rem;
+            transition: color 0.3s;
         }
 
         .summary-value {
             font-size: 1rem;
             font-weight: 600;
             color: #333;
+            transition: color 0.3s;
         }
 
         .payment-notice {
@@ -370,6 +418,7 @@
             margin: 1rem 0;
             font-size: 0.875rem;
             color: #856404;
+            transition: background 0.3s, color 0.3s;
         }
 
         .btn-whatsapp {
@@ -405,6 +454,7 @@
             text-align: center;
             padding: 2rem;
             color: #666;
+            transition: color 0.3s;
         }
 
         .image-preview-modal {
@@ -460,13 +510,120 @@
             font-weight: 700;
             color: #ea1d2c;
             white-space: nowrap;
+            transition: color 0.3s;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .header {
+            background: #2d2d2d;
+        }
+
+        body.dark-mode .logo {
+            color: #ff4757;
+        }
+
+        body.dark-mode .progress-bar,
+        body.dark-mode .option-item,
+        body.dark-mode .bottom-bar,
+        body.dark-mode .modal-content {
+            background: #2d2d2d;
+        }
+
+        body.dark-mode .section-title,
+        body.dark-mode .option-name,
+        body.dark-mode .total-price,
+        body.dark-mode .summary-value,
+        body.dark-mode .modal-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .option-description,
+        body.dark-mode .step-label,
+        body.dark-mode .total-label,
+        body.dark-mode .summary-label,
+        body.dark-mode .loading,
+        body.dark-mode .close-btn {
+            color: #999;
+        }
+
+        body.dark-mode .option-item {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        body.dark-mode .option-item.selected {
+            background: #3d1f1f;
+        }
+
+        body.dark-mode .option-radio {
+            border-color: #555;
+        }
+
+        body.dark-mode .summary-item {
+            background: #1a1a1a;
+        }
+
+        body.dark-mode .payment-notice {
+            background: #3d3419;
+            border-left-color: #f39c12;
+            color: #f5d576;
+        }
+
+        body.dark-mode .step-circle {
+            background: #444;
+            color: #999;
+        }
+
+        body.dark-mode .progress-step.active .step-circle {
+            background: #ff4757;
+        }
+
+        body.dark-mode .progress-line {
+            background: #444;
+        }
+
+        body.dark-mode .progress-line-fill {
+            background: #ff4757;
+        }
+
+        body.dark-mode .btn-continue:not(:disabled) {
+            background: #ff4757;
+        }
+
+        body.dark-mode .modal {
+            background: rgba(0,0,0,0.8);
+        }
+
+        body.dark-mode .option-price,
+        body.dark-mode .summary-price {
+            color: #ff4757;
+        }
+
+        body.dark-mode .btn-back {
+            color: #ff4757;
+        }
+
+        body.dark-mode .progress-step.active .step-label {
+            color: #ff4757;
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background: rgba(255, 71, 87, 0.1);
         }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-content">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+                <span id="themeIcon">🌙</span>
+            </button>
             <div class="logo">🎂 Fafa Bolos</div>
+            <div style="width: 40px;"></div>
         </div>
     </header>
 
@@ -519,7 +676,6 @@
         let selections = {};
         let WHATSAPP_NUMBER = '5561991944143';
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1sY4UdcXWEmLS-dvgKibR6s9TdFUdU_24L5qm0fuP2So/edit';
-        let groupRelationships = {}; // Para rastrear grupos relacionados (ex: tradicional e especial)
 
         async function loadData() {
             const synced = await syncWithSheet(true);
@@ -626,7 +782,6 @@
             const item = items.find(i => i.id === itemId);
             const currentGroup = groups.find(g => g.id === groupId);
             
-            // Se o grupo atual tem um grupo alternativo, desmarcar seleção do grupo alternativo
             if (currentGroup && currentGroup.grupoAlternativo) {
                 const altGroupId = currentGroup.grupoAlternativo;
                 if (selections[altGroupId]) {
@@ -636,7 +791,6 @@
             
             selections[groupId] = item;
             
-            // Ocultar botão "Pular" se o grupo for opcional e agora tem seleção
             if (!currentGroup.obrigatorio) {
                 const skipButton = document.getElementById(`skipButton${stepIndex}`);
                 if (skipButton) {
@@ -660,7 +814,6 @@
             const orderedGroups = getGroupsByOrder();
             const currentGroup = orderedGroups[currentStepIndex];
             
-            // Permitir continuar se: grupo não é obrigatório OU tem seleção
             if (currentGroup && (!currentGroup.obrigatorio || selections[currentGroup.id])) {
                 continueBtn.disabled = false;
                 if (currentStepIndex === orderedGroups.length - 1) {
@@ -677,7 +830,6 @@
             const orderedGroups = getGroupsByOrder();
             const currentGroup = orderedGroups[currentStepIndex];
             
-            // Remover seleção do grupo atual se existir
             if (currentGroup && selections[currentGroup.id]) {
                 delete selections[currentGroup.id];
             }
@@ -712,7 +864,6 @@
                     stepElement.classList.toggle('hidden', index !== stepIndex);
                 }
                 
-                // Mostrar ou ocultar botão "Pular" baseado na seleção
                 if (!group.obrigatorio) {
                     const skipButton = document.getElementById(`skipButton${index}`);
                     if (skipButton) {
@@ -747,7 +898,7 @@
             
             summaryItems.innerHTML = orderedGroups.map(group => {
                 const item = selections[group.id];
-                if (!item && !group.obrigatorio) return ''; // Não mostrar grupos opcionais não selecionados
+                if (!item && !group.obrigatorio) return '';
                 return `
                     <div class="summary-item">
                         <div class="summary-label">${group.icone} ${group.nome}</div>
@@ -819,8 +970,8 @@
                     nome: row.c[1]?.v || '',
                     icone: row.c[2]?.v || '📦',
                     ordem: parseInt(row.c[3]?.v || 1),
-                    obrigatorio: row.c[4]?.v !== false, // Coluna E: obrigatório (padrão true)
-                    grupoAlternativo: parseInt(row.c[5]?.v || 0) || null // Coluna F: ID do grupo alternativo
+                    obrigatorio: row.c[4]?.v !== false,
+                    grupoAlternativo: parseInt(row.c[5]?.v || 0) || null
                 })).filter(g => g.id > 0);
 
                 items = itensJson.table.rows.map(row => ({
@@ -863,6 +1014,31 @@
             }
         }
 
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeIcon.textContent = '☀️';
+            }
+        }
+
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
@@ -870,6 +1046,7 @@
         };
 
         (async function init() {
+            loadTheme();
             await loadData();
             buildClientInterface();
             renderClientOptions();
