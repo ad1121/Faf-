@@ -226,12 +226,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
             flex-shrink: 0;
             transition: transform 0.2s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .option-item:hover .option-emoji {
@@ -853,15 +850,6 @@
             return 'linear-gradient(135deg, #EA1D2C 0%, #C41623 100%)';
         }
 
-        function getItemInitials(itemName) {
-            // Pega as primeiras letras significativas
-            const words = itemName.split(' ').filter(w => w.length > 2);
-            if (words.length >= 2) {
-                return (words[0][0] + words[1][0]).toUpperCase();
-            }
-            return itemName.substring(0, 2).toUpperCase();
-        }
-
         function renderOptions(itemsList, containerId, stepIndex, groupId) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -871,7 +859,6 @@
             container.innerHTML = itemsList.length > 0 ? itemsList.map(item => {
                 const hasImage = item.imagem && item.imagem.trim() !== '' && !item.imagem.includes('placeholder');
                 const itemColor = getItemColor(item.nome);
-                const itemInitials = getItemInitials(item.nome);
                 
                 return `
                 <div class="option-item ${selected?.id === item.id ? 'selected' : ''}" 
@@ -881,9 +868,9 @@
                              onclick="event.stopPropagation(); openImagePreview('${item.imagem.replace(/'/g, "\\'")}', '${item.nome.replace(/'/g, "\\'")}')"
                              style="cursor: zoom-in;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="option-emoji" style="display:none; background: ${itemColor};">${itemInitials}</div>
+                        <div class="option-emoji" style="display:none; background: ${itemColor};"></div>
                     ` : `
-                        <div class="option-emoji" style="background: ${itemColor};">${itemInitials}</div>
+                        <div class="option-emoji" style="background: ${itemColor};"></div>
                     `}
                     <div class="option-info">
                         <div class="option-name">${item.nome}</div>
