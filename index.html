@@ -193,7 +193,7 @@
         .option-item {
             background: #fff;
             border-radius: 12px;
-            padding: 1rem;
+            padding: 1.25rem;
             display: flex;
             gap: 1rem;
             cursor: pointer;
@@ -209,30 +209,6 @@
         .option-item.selected {
             border-color: #ea1d2c;
             background: #fff5f5;
-        }
-
-        .option-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .option-emoji {
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: transform 0.2s;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .option-item:hover .option-emoji {
-            transform: scale(1.05);
         }
 
         .option-info {
@@ -473,51 +449,6 @@
             transition: color 0.3s;
         }
 
-        .image-preview-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .image-preview-modal.active {
-            display: flex;
-        }
-
-        .image-preview-content {
-            max-width: 90%;
-            max-height: 90vh;
-            border-radius: 12px;
-            position: relative;
-        }
-
-        .image-preview-close {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            z-index: 2001;
-        }
-
-        .summary-item-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-
         .summary-name {
             flex: 1;
         }
@@ -527,6 +458,13 @@
             color: #ea1d2c;
             white-space: nowrap;
             transition: color 0.3s;
+        }
+
+        .summary-item-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
         }
 
         /* Dark Mode */
@@ -680,11 +618,6 @@
         </div>
     </div>
 
-    <div class="image-preview-modal" id="imagePreviewModal" onclick="closeImagePreview(event)">
-        <button class="image-preview-close" onclick="closeImagePreview(event)">✕</button>
-        <img id="previewImage" class="image-preview-content" src="" alt="Preview">
-    </div>
-
     <script>
         let currentStepIndex = 0;
         let groups = [];
@@ -704,17 +637,17 @@
                     { id: 3, nome: 'Adicional', icone: '🎨', ordem: 5, obrigatorio: true }
                 ];
                 items = [
-                    { id: 1, grupoId: 4, nome: '1 Kg', descricao: 'Serve até 10 pessoas', preco: 85, imagem: '' },
-                    { id: 2, grupoId: 4, nome: '2 Kg', descricao: 'Serve até 20 pessoas', preco: 170, imagem: '' },
-                    { id: 3, grupoId: 1, nome: 'Chocolate', descricao: 'Massa de chocolate', preco: 0, imagem: '' },
-                    { id: 4, grupoId: 1, nome: 'Branca', descricao: 'Massa branca', preco: 0, imagem: '' },
-                    { id: 5, grupoId: 2, nome: 'Brigadeiro', descricao: 'Recheio de brigadeiro', preco: 0, imagem: '' },
-                    { id: 6, grupoId: 2, nome: 'Doce de Leite', descricao: 'Recheio de doce de leite', preco: 0, imagem: '' },
-                    { id: 7, grupoId: 5, nome: 'Ninho c/ Abacaxi', descricao: 'Recheio especial', preco: 10, imagem: '' },
-                    { id: 8, grupoId: 5, nome: 'Maracujá', descricao: 'Recheio de maracujá', preco: 10, imagem: '' },
-                    { id: 9, grupoId: 3, nome: 'Pó Colorido', descricao: 'Adicional decorativo', preco: 10, imagem: '' },
-                    { id: 10, grupoId: 3, nome: 'Glitter', descricao: 'Adicional brilhante', preco: 12, imagem: '' },
-                    { id: 11, grupoId: 3, nome: 'Sem Adicional', descricao: 'Sem adicional', preco: 0, imagem: '' }
+                    { id: 1, grupoId: 4, nome: '1 Kg', descricao: 'Serve até 10 pessoas', preco: 85 },
+                    { id: 2, grupoId: 4, nome: '2 Kg', descricao: 'Serve até 20 pessoas', preco: 170 },
+                    { id: 3, grupoId: 1, nome: 'Chocolate', descricao: 'Massa de chocolate', preco: 0 },
+                    { id: 4, grupoId: 1, nome: 'Branca', descricao: 'Massa branca', preco: 0 },
+                    { id: 5, grupoId: 2, nome: 'Brigadeiro', descricao: 'Recheio de brigadeiro', preco: 0 },
+                    { id: 6, grupoId: 2, nome: 'Doce de Leite', descricao: 'Recheio de doce de leite', preco: 0 },
+                    { id: 7, grupoId: 5, nome: 'Ninho c/ Abacaxi', descricao: 'Recheio especial', preco: 10 },
+                    { id: 8, grupoId: 5, nome: 'Maracujá', descricao: 'Recheio de maracujá', preco: 10 },
+                    { id: 9, grupoId: 3, nome: 'Pó Colorido', descricao: 'Adicional decorativo', preco: 10 },
+                    { id: 10, grupoId: 3, nome: 'Glitter', descricao: 'Adicional brilhante', preco: 12 },
+                    { id: 11, grupoId: 3, nome: 'Sem Adicional', descricao: 'Sem adicional', preco: 0 }
                 ];
             }
             WHATSAPP_NUMBER = localStorage.getItem('whatsappNumber') || '5561991944143';
@@ -771,107 +704,15 @@
             });
         }
 
-        function getItemColor(itemName) {
-            const name = itemName.toLowerCase();
-            
-            // Chocolates - marrom escuro
-            if (name.includes('chocolate') || name.includes('brigadeiro') || name.includes('belga') || 
-                name.includes('alpino') || name.includes('ganache') || name.includes('nutella')) {
-                return 'linear-gradient(135deg, #6B4423 0%, #4A2C1A 100%)';
-            }
-            
-            // Doce de leite / Caramelo - bege/dourado
-            if (name.includes('doce de leite') || name.includes('caramelo')) {
-                return 'linear-gradient(135deg, #D4A574 0%, #B8885D 100%)';
-            }
-            
-            // Ninho / Leite - branco/creme
-            if (name.includes('ninho') || name.includes('leite') || name.includes('branca') || 
-                name.includes('baunilha') || name.includes('chantilly')) {
-                return 'linear-gradient(135deg, #F5E6D3 0%, #E8D4B8 100%)';
-            }
-            
-            // Coco / Prestígio - branco
-            if (name.includes('coco') || name.includes('prestígio') || name.includes('prestigio')) {
-                return 'linear-gradient(135deg, #FFFFFF 0%, #E8E8E8 100%)';
-            }
-            
-            // Morango / Vermelho
-            if (name.includes('morango')) {
-                return 'linear-gradient(135deg, #E85D75 0%, #C93756 100%)';
-            }
-            
-            // Maracujá / Amarelo
-            if (name.includes('maracujá') || name.includes('maracuja') || name.includes('laranja')) {
-                return 'linear-gradient(135deg, #FFD93D 0%, #F6C90E 100%)';
-            }
-            
-            // Abacaxi / Amarelo claro
-            if (name.includes('abacaxi')) {
-                return 'linear-gradient(135deg, #FFE17B 0%, #FFD43B 100%)';
-            }
-            
-            // Pistache / Verde
-            if (name.includes('pistache') || name.includes('limão') || name.includes('limao')) {
-                return 'linear-gradient(135deg, #A8D5A3 0%, #7FB77E 100%)';
-            }
-            
-            // Ameixa / Roxo
-            if (name.includes('ameixa') || name.includes('uva')) {
-                return 'linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%)';
-            }
-            
-            // Cenoura / Laranja
-            if (name.includes('cenoura')) {
-                return 'linear-gradient(135deg, #FF8C42 0%, #E67E22 100%)';
-            }
-            
-            // Pó colorido / Arco-íris
-            if (name.includes('pó colorido') || name.includes('po colorido') || name.includes('colorido')) {
-                return 'linear-gradient(135deg, #FF6B9D 0%, #C06C84 50%, #6C5B7B 100%)';
-            }
-            
-            // Glitter / Dourado brilhante
-            if (name.includes('glitter')) {
-                return 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
-            }
-            
-            // Tamanhos / Azul
-            if (name.includes('kg') || name.includes('quilo')) {
-                return 'linear-gradient(135deg, #4A90E2 0%, #357ABD 100%)';
-            }
-            
-            // Sem adicional / Cinza
-            if (name.includes('sem')) {
-                return 'linear-gradient(135deg, #95A5A6 0%, #7F8C8D 100%)';
-            }
-            
-            // Padrão - Rosa
-            return 'linear-gradient(135deg, #EA1D2C 0%, #C41623 100%)';
-        }
-
         function renderOptions(itemsList, containerId, stepIndex, groupId) {
             const container = document.getElementById(containerId);
             if (!container) return;
             
             const selected = selections[groupId];
             
-            container.innerHTML = itemsList.length > 0 ? itemsList.map(item => {
-                const hasImage = item.imagem && item.imagem.trim() !== '' && !item.imagem.includes('placeholder');
-                const itemColor = getItemColor(item.nome);
-                
-                return `
+            container.innerHTML = itemsList.length > 0 ? itemsList.map(item => `
                 <div class="option-item ${selected?.id === item.id ? 'selected' : ''}" 
                      onclick="selectItem(${groupId}, ${item.id}, ${stepIndex})">
-                    ${hasImage ? `
-                        <img src="${item.imagem}" alt="${item.nome}" class="option-image" 
-                             onclick="event.stopPropagation(); openImagePreview('${item.imagem.replace(/'/g, "\\'")}', '${item.nome.replace(/'/g, "\\'")}')"
-                             style="cursor: zoom-in;"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="option-emoji" style="display:none; background: ${itemColor};"></div>
-                    ` : `
-                        <div class="option-emoji" style="background: ${itemColor};"></div>
-                    `}
                     <div class="option-info">
                         <div class="option-name">${item.nome}</div>
                         <div class="option-description">${item.descricao}</div>
@@ -879,7 +720,7 @@
                     </div>
                     <div class="option-radio"></div>
                 </div>
-            `}).join('') : '<div class="loading">Nenhum item disponível</div>';
+            `).join('') : '<div class="loading">Nenhum item disponível</div>';
         }
 
         function selectItem(groupId, itemId, stepIndex) {
@@ -1023,6 +864,10 @@
             document.getElementById('summaryModal').classList.add('active');
         }
 
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
         function sendWhatsApp() {
             let total = 0;
             let message = '🎂 *Novo Pedido - Fafa Bolos*\n\n';
@@ -1083,8 +928,7 @@
                     grupoId: parseInt(row.c[1]?.v || 0),
                     nome: row.c[2]?.v || '',
                     descricao: row.c[3]?.v || '',
-                    preco: parseFloat(row.c[4]?.v || 0),
-                    imagem: row.c[5]?.v || ''
+                    preco: parseFloat(row.c[4]?.v || 0)
                 })).filter(i => i.id > 0);
 
                 buildClientInterface();
@@ -1095,10 +939,6 @@
                 console.error('Erro na sincronização:', error);
                 return false;
             }
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
         }
 
         function openImagePreview(imageUrl, imageName) {
