@@ -219,6 +219,23 @@
             flex-shrink: 0;
         }
 
+        .option-emoji {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            flex-shrink: 0;
+            transition: background 0.3s;
+        }
+
+        body.dark-mode .option-emoji {
+            background: linear-gradient(135deg, #3a3a3a 0%, #2d2d2d 100%);
+        }
+
         .option-info {
             flex: 1;
             display: flex;
@@ -688,17 +705,17 @@
                     { id: 3, nome: 'Adicional', icone: '🎨', ordem: 5, obrigatorio: true }
                 ];
                 items = [
-                    { id: 1, grupoId: 4, nome: '1 Kg', descricao: 'Bolo de 1 quilo', preco: 50, imagem: 'https://via.placeholder.com/200/FFD700/333?text=1+Kg' },
-                    { id: 2, grupoId: 4, nome: '2 Kg', descricao: 'Bolo de 2 quilos', preco: 90, imagem: 'https://via.placeholder.com/200/FFA500/333?text=2+Kg' },
-                    { id: 3, grupoId: 1, nome: 'Chocolate', descricao: 'Massa fofinha de chocolate', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Chocolate' },
-                    { id: 4, grupoId: 1, nome: 'Baunilha', descricao: 'Massa clássica de baunilha', preco: 20, imagem: 'https://via.placeholder.com/200/F5DEB3/333?text=Baunilha' },
-                    { id: 5, grupoId: 2, nome: 'Brigadeiro', descricao: 'Cremoso brigadeiro gourmet', preco: 15, imagem: 'https://via.placeholder.com/200/4B3621/FFF?text=Brigadeiro' },
-                    { id: 6, grupoId: 2, nome: 'Doce de Leite', descricao: 'Doce de leite cremoso', preco: 12, imagem: 'https://via.placeholder.com/200/CD853F/FFF?text=Doce' },
-                    { id: 7, grupoId: 5, nome: 'Nutella', descricao: 'Recheio especial de Nutella', preco: 25, imagem: 'https://via.placeholder.com/200/8B4513/FFF?text=Nutella' },
-                    { id: 8, grupoId: 5, nome: 'Pistache', descricao: 'Recheio especial de pistache', preco: 30, imagem: 'https://via.placeholder.com/200/90EE90/333?text=Pistache' },
-                    { id: 9, grupoId: 3, nome: 'Ganache', descricao: 'Chocolate meio amargo', preco: 18, imagem: 'https://via.placeholder.com/200/3D2817/FFF?text=Ganache' },
-                    { id: 10, grupoId: 3, nome: 'Chantilly', descricao: 'Chantilly tradicional', preco: 15, imagem: 'https://via.placeholder.com/200/FFFACD/333?text=Chantilly' },
-                    { id: 11, grupoId: 3, nome: 'Sem Adicional', descricao: 'Sem adicional', preco: 0, imagem: 'https://via.placeholder.com/200/F0F0F0/999?text=Sem+Adicional' }
+                    { id: 1, grupoId: 4, nome: '1 Kg', descricao: 'Serve até 10 pessoas', preco: 85, imagem: '' },
+                    { id: 2, grupoId: 4, nome: '2 Kg', descricao: 'Serve até 20 pessoas', preco: 170, imagem: '' },
+                    { id: 3, grupoId: 1, nome: 'Chocolate', descricao: 'Massa de chocolate', preco: 0, imagem: '' },
+                    { id: 4, grupoId: 1, nome: 'Branca', descricao: 'Massa branca', preco: 0, imagem: '' },
+                    { id: 5, grupoId: 2, nome: 'Brigadeiro', descricao: 'Recheio de brigadeiro', preco: 0, imagem: '' },
+                    { id: 6, grupoId: 2, nome: 'Doce de Leite', descricao: 'Recheio de doce de leite', preco: 0, imagem: '' },
+                    { id: 7, grupoId: 5, nome: 'Ninho c/ Abacaxi', descricao: 'Recheio especial', preco: 10, imagem: '' },
+                    { id: 8, grupoId: 5, nome: 'Maracujá', descricao: 'Recheio de maracujá', preco: 10, imagem: '' },
+                    { id: 9, grupoId: 3, nome: 'Pó Colorido', descricao: 'Adicional decorativo', preco: 10, imagem: '' },
+                    { id: 10, grupoId: 3, nome: 'Glitter', descricao: 'Adicional brilhante', preco: 12, imagem: '' },
+                    { id: 11, grupoId: 3, nome: 'Sem Adicional', descricao: 'Sem adicional', preco: 0, imagem: '' }
                 ];
             }
             WHATSAPP_NUMBER = localStorage.getItem('whatsappNumber') || '5561991944143';
@@ -755,19 +772,81 @@
             });
         }
 
+        function getItemEmoji(itemName, groupName) {
+            const name = itemName.toLowerCase();
+            const group = groupName.toLowerCase();
+            
+            // Emojis por peso/tamanho
+            if (name.includes('kg') || name.includes('quilo')) {
+                if (name.includes('1')) return '🎂';
+                if (name.includes('2')) return '🍰';
+                if (name.includes('3')) return '🧁';
+                if (name.includes('4')) return '🎂';
+                if (name.includes('5')) return '🍰';
+            }
+            
+            // Massas
+            if (group.includes('massa')) {
+                if (name.includes('chocolate')) return '🍫';
+                if (name.includes('branca') || name.includes('baunilha')) return '🤍';
+                if (name.includes('cenoura')) return '🥕';
+                if (name.includes('laranja')) return '🍊';
+                return '🍰';
+            }
+            
+            // Recheios
+            if (group.includes('recheio')) {
+                if (name.includes('prestígio') || name.includes('prestigio')) return '🥥';
+                if (name.includes('brigadeiro')) return '🍫';
+                if (name.includes('alpino')) return '🍫';
+                if (name.includes('belga')) return '🍫';
+                if (name.includes('doce de leite')) return '🍮';
+                if (name.includes('ninho')) return '🐣';
+                if (name.includes('nutella')) return '🌰';
+                if (name.includes('pistache')) return '🥜';
+                if (name.includes('abacaxi')) return '🍍';
+                if (name.includes('morango')) return '🍓';
+                if (name.includes('ameixa')) return '🍑';
+                if (name.includes('maracujá') || name.includes('maracuja')) return '💛';
+                return '💖';
+            }
+            
+            // Adicional
+            if (group.includes('adicional')) {
+                if (name.includes('pó colorido') || name.includes('po colorido')) return '🌈';
+                if (name.includes('glitter')) return '✨';
+                if (name.includes('chantilly') || name.includes('chanti')) return '☁️';
+                if (name.includes('ganache')) return '🍫';
+                if (name.includes('sem')) return '⭕';
+                return '🎨';
+            }
+            
+            return '🎂';
+        }
+
         function renderOptions(itemsList, containerId, stepIndex, groupId) {
             const container = document.getElementById(containerId);
             if (!container) return;
             
             const selected = selections[groupId];
+            const currentGroup = groups.find(g => g.id === groupId);
             
-            container.innerHTML = itemsList.length > 0 ? itemsList.map(item => `
+            container.innerHTML = itemsList.length > 0 ? itemsList.map(item => {
+                const hasImage = item.imagem && item.imagem.trim() !== '' && !item.imagem.includes('placeholder');
+                const emoji = getItemEmoji(item.nome, currentGroup?.nome || '');
+                
+                return `
                 <div class="option-item ${selected?.id === item.id ? 'selected' : ''}" 
                      onclick="selectItem(${groupId}, ${item.id}, ${stepIndex})">
-                    <img src="${item.imagem}" alt="${item.nome}" class="option-image" 
-                         onclick="event.stopPropagation(); openImagePreview('${item.imagem.replace(/'/g, "\\'")}', '${item.nome.replace(/'/g, "\\'")}')"
-                         style="cursor: zoom-in;"
-                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2260%22%3E🖼️%3C/text%3E%3C/svg%3E'">
+                    ${hasImage ? `
+                        <img src="${item.imagem}" alt="${item.nome}" class="option-image" 
+                             onclick="event.stopPropagation(); openImagePreview('${item.imagem.replace(/'/g, "\\'")}', '${item.nome.replace(/'/g, "\\'")}')"
+                             style="cursor: zoom-in;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="option-emoji" style="display:none;">${emoji}</div>
+                    ` : `
+                        <div class="option-emoji">${emoji}</div>
+                    `}
                     <div class="option-info">
                         <div class="option-name">${item.nome}</div>
                         <div class="option-description">${item.descricao}</div>
@@ -775,7 +854,7 @@
                     </div>
                     <div class="option-radio"></div>
                 </div>
-            `).join('') : '<div class="loading">Nenhum item disponível</div>';
+            `}).join('') : '<div class="loading">Nenhum item disponível</div>';
         }
 
         function selectItem(groupId, itemId, stepIndex) {
