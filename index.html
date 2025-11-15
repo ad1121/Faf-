@@ -333,7 +333,8 @@
             bottom: 0;
             background: rgba(0,0,0,0.5);
             z-index: 1000;
-            align-items: flex-end;
+            align-items: center;
+            justify-content: center;
             transition: background 0.3s;
         }
 
@@ -343,9 +344,10 @@
 
         .modal-content {
             background: #fff;
-            border-radius: 20px 20px 0 0;
+            border-radius: 20px;
             padding: 1.5rem;
-            width: 100%;
+            width: 90%;
+            max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
             animation: slideUp 0.3s;
@@ -353,8 +355,8 @@
         }
 
         @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .modal-header {
@@ -568,6 +570,130 @@
         body.dark-mode .theme-toggle:hover {
             background: rgba(255, 71, 87, 0.1);
         }
+
+        .confirm-modal-text {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+
+        .confirm-modal-highlight {
+            background: #fff5f5;
+            border-left: 3px solid #ea1d2c;
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        body.dark-mode .confirm-modal-text {
+            color: #999;
+        }
+
+        body.dark-mode .confirm-modal-highlight {
+            background: #3d1f1f;
+            border-left-color: #ff4757;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-modal {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-modal-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-modal-secondary:active {
+            transform: scale(0.95);
+        }
+
+        body.dark-mode .btn-modal-secondary {
+            background: #3a3a3a;
+            color: #e0e0e0;
+        }
+
+        .btn-modal-primary {
+            background: #ea1d2c;
+            color: white;
+        }
+
+        .btn-modal-primary:active {
+            transform: scale(0.95);
+        }
+
+        body.dark-mode .btn-modal-primary {
+            background: #ff4757;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .form-label {
+            color: #e0e0e0;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #ea1d2c;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        body.dark-mode .form-input,
+        body.dark-mode .form-textarea {
+            background: #2d2d2d;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-input:focus,
+        body.dark-mode .form-textarea:focus {
+            border-color: #ff4757;
+        }
+
+        .form-note {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 0.25rem;
+        }
     </style>
 </head>
 <body>
@@ -614,6 +740,50 @@
                 <div style="font-size:0.875rem;color:#666">Valor Total</div>
                 <div style="font-size:2rem;font-weight:700;color:#ea1d2c" id="summaryTotal">R$ 0,00</div>
             </div>
+            <button class="btn-whatsapp" onclick="showDeliveryForm()">Continuar ➜</button>
+        </div>
+    </div>
+
+    <div class="modal" id="confirmRecheioModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">🌟 Recheio Especial</h3>
+            </div>
+            <div class="confirm-modal-text">
+                Você já escolheu o recheio:
+            </div>
+            <div class="confirm-modal-highlight">
+                <strong id="currentRecheioName"></strong>
+            </div>
+            <div class="confirm-modal-text">
+                Deseja trocar por um <strong>recheio especial</strong>? O recheio tradicional será substituído.
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-modal-secondary" onclick="skipSpecialRecheio()">Não, obrigado</button>
+                <button class="btn-modal btn-modal-primary" onclick="continueToSpecialRecheio()">Sim, quero especial!</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="deliveryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">📅 Detalhes da Entrega</h3>
+                <button class="close-btn" onclick="closeModal('deliveryModal')">✕</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="deliveryDate">Data de Entrega *</label>
+                <input type="date" id="deliveryDate" class="form-input" required>
+                <div class="form-note">Escolha a data desejada para receber seu bolo</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="deliveryComments">Observações (Opcional)</label>
+                <textarea id="deliveryComments" class="form-textarea" placeholder="Ex: Entregar após 15h, escrever 'Parabéns Maria' no bolo..."></textarea>
+                <div class="form-note">Adicione qualquer informação importante sobre seu pedido</div>
+            </div>
+
             <button class="btn-whatsapp" onclick="sendWhatsApp()">📱 Fazer Pedido pelo WhatsApp</button>
         </div>
     </div>
@@ -623,7 +793,8 @@
         let groups = [];
         let items = [];
         let selections = {};
-        let WHATSAPP_NUMBER = '5561991813043';
+        let deliveryInfo = { date: '', comments: '' };
+        let WHATSAPP_NUMBER = '5561991944143';
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1sY4UdcXWEmLS-dvgKibR6s9TdFUdU_24L5qm0fuP2So/edit';
 
         async function loadData() {
@@ -631,7 +802,7 @@
             if (!synced) {
                 groups = [
                     { id: 4, nome: 'Kg do Bolo', icone: '⚖️', ordem: 1, obrigatorio: true },
-                    { id: 1, nome: 'Massa', icone: '🥞', ordem: 2, obrigatorio: true },
+                    { id: 1, nome: 'Massas', icone: '🥞', ordem: 2, obrigatorio: true },
                     { id: 2, nome: 'Recheios Tradicionais', icone: '🍯', ordem: 3, obrigatorio: true, grupoAlternativo: 5 },
                     { id: 5, nome: 'Recheios Especiais', icone: '🌟', ordem: 4, obrigatorio: false, grupoAlternativo: 2 },
                     { id: 3, nome: 'Adicional', icone: '🎨', ordem: 5, obrigatorio: true }
@@ -650,7 +821,7 @@
                     { id: 11, grupoId: 3, nome: 'Sem Adicional', descricao: 'Sem adicional', preco: 0 }
                 ];
             }
-            WHATSAPP_NUMBER = localStorage.getItem('whatsappNumber') || '5561991813043';
+            WHATSAPP_NUMBER = localStorage.getItem('whatsappNumber') || '5561991944143';
         }
 
         function getGroupsByOrder() {
@@ -658,7 +829,19 @@
         }
 
         function getItemsByGroup(groupId) {
-            return items.filter(item => item.grupoId === groupId);
+            let groupItems = items.filter(item => item.grupoId === groupId);
+            
+            // Se for grupo de adicional, coloca "Sem Adicional" primeiro
+            const group = groups.find(g => g.id === groupId);
+            if (group && group.nome.toLowerCase().includes('adicional')) {
+                return groupItems.sort((a, b) => {
+                    if (a.nome.toLowerCase().includes('sem')) return -1;
+                    if (b.nome.toLowerCase().includes('sem')) return 1;
+                    return 0;
+                });
+            }
+            
+            return groupItems;
         }
 
         function buildClientInterface() {
@@ -669,21 +852,44 @@
                 <div class="progress-line">
                     <div class="progress-line-fill" id="progressFill" style="width:0%"></div>
                 </div>
-                ${orderedGroups.map((group, index) => `
+                ${orderedGroups.map((group, index) => {
+                    let stepLabel = group.nome;
+                    // Converte "Massas" para "Massa"
+                    if (stepLabel.toLowerCase() === 'massas') {
+                        stepLabel = 'Massa';
+                    }
+                    return `
                     <div class="progress-step ${index === 0 ? 'active' : ''}" data-step="${index}">
                         <div class="step-circle">${index + 1}</div>
-                        <div class="step-label">${group.nome}</div>
+                        <div class="step-label">${stepLabel}</div>
                     </div>
-                `).join('')}
+                `}).join('')}
             `;
             
             const stepContents = document.getElementById('stepContents');
             stepContents.innerHTML = orderedGroups.map((group, index) => {
                 const hasSelection = selections[group.id];
+                
+                // Ajusta o texto do título
+                let titleText = group.nome;
+                if (titleText.toLowerCase() === 'massas') {
+                    titleText = 'a Massa do Bolo';
+                } else if (titleText.toLowerCase().includes('recheios tradicionais')) {
+                    titleText = 'o Recheio Tradicional';
+                } else if (titleText.toLowerCase().includes('recheios especiais')) {
+                    titleText = 'o Recheio Especial';
+                } else if (titleText.toLowerCase().includes('kg do bolo')) {
+                    titleText = titleText;
+                } else if (titleText.toLowerCase().includes('adicional')) {
+                    titleText = titleText;
+                } else {
+                    titleText = group.nome;
+                }
+                
                 return `
                 <div id="step${index}" class="step-content ${index !== 0 ? 'hidden' : ''}">
                     <div class="section-header">
-                        <h2 class="section-title">Escolha ${group.nome}</h2>
+                        <h2 class="section-title">Escolha ${titleText}</h2>
                         ${index > 0 ? '<button class="btn-back" onclick="goBack()">← Voltar</button>' : ''}
                     </div>
                     ${!group.obrigatorio && !hasSelection ? `
@@ -784,12 +990,44 @@
 
         function handleContinue() {
             const orderedGroups = getGroupsByOrder();
+            
+            // Se está indo para recheios especiais E já tem recheio tradicional selecionado
             if (currentStepIndex < orderedGroups.length - 1) {
+                const nextGroup = orderedGroups[currentStepIndex + 1];
+                const currentGroup = orderedGroups[currentStepIndex];
+                
+                // Verifica se o próximo grupo é "Recheios Especiais" (ou tem grupo alternativo)
+                if (nextGroup.grupoAlternativo && selections[nextGroup.grupoAlternativo]) {
+                    // Mostra confirmação
+                    const currentRecheio = selections[nextGroup.grupoAlternativo];
+                    document.getElementById('currentRecheioName').textContent = currentRecheio.nome;
+                    document.getElementById('confirmRecheioModal').classList.add('active');
+                    return;
+                }
+                
                 currentStepIndex++;
                 showStepContent(currentStepIndex);
             } else {
                 showSummary();
             }
+        }
+
+        function skipSpecialRecheio() {
+            closeModal('confirmRecheioModal');
+            // Pula o grupo de recheios especiais
+            currentStepIndex += 2; // Pula especiais e vai direto pro próximo
+            const orderedGroups = getGroupsByOrder();
+            if (currentStepIndex >= orderedGroups.length) {
+                showSummary();
+            } else {
+                showStepContent(currentStepIndex);
+            }
+        }
+
+        function continueToSpecialRecheio() {
+            closeModal('confirmRecheioModal');
+            currentStepIndex++;
+            showStepContent(currentStepIndex);
         }
 
         function goBack() {
@@ -844,9 +1082,16 @@
             summaryItems.innerHTML = orderedGroups.map(group => {
                 const item = selections[group.id];
                 if (!item && !group.obrigatorio) return '';
+                
+                // Ajusta o nome do grupo se for massa (singular)
+                let groupName = group.nome;
+                if (group.nome.toLowerCase().includes('massa')) {
+                    groupName = 'Massa';
+                }
+                
                 return `
                     <div class="summary-item">
-                        <div class="summary-label">${group.icone} ${group.nome}</div>
+                        <div class="summary-label">${group.icone} ${groupName}</div>
                         <div class="summary-item-content">
                             <div class="summary-name">${item ? item.nome : '-'}</div>
                             ${item && item.preco > 0 ? `<div class="summary-price">R$ ${item.preco.toFixed(2)}</div>` : ''}
@@ -864,11 +1109,29 @@
             document.getElementById('summaryModal').classList.add('active');
         }
 
+        function showDeliveryForm() {
+            closeModal('summaryModal');
+            // Define data mínima como amanhã
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('deliveryDate').min = tomorrow.toISOString().split('T')[0];
+            document.getElementById('deliveryModal').classList.add('active');
+        }
+
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
 
         function sendWhatsApp() {
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            
+            if (!deliveryDate) {
+                alert('Por favor, selecione a data de entrega');
+                return;
+            }
+            
+            const deliveryComments = document.getElementById('deliveryComments').value;
+            
             let total = 0;
             let message = '🎂 *Novo Pedido - Fafa Bolos*\n\n';
             message += '*MEU BOLO PERSONALIZADO:*\n\n';
@@ -877,7 +1140,12 @@
             orderedGroups.forEach(group => {
                 const item = selections[group.id];
                 if (item) {
-                    message += `${group.icone} *${group.nome}:* ${item.nome}\n`;
+                    let groupName = group.nome;
+                    if (group.nome.toLowerCase().includes('massa')) {
+                        groupName = 'Massa';
+                    }
+                    
+                    message += `${group.icone} *${groupName}:* ${item.nome}\n`;
                     if (item.preco > 0) {
                         message += `   R$ ${item.preco.toFixed(2)}\n\n`;
                         total += parseFloat(item.preco);
@@ -890,6 +1158,16 @@
             const sinal = total * 0.5;
             message += `━━━━━━━━━━━━━━━━━━\n`;
             message += `💰 *VALOR TOTAL: R$ ${total.toFixed(2)}*\n\n`;
+            
+            // Adiciona data de entrega
+            const [year, month, day] = deliveryDate.split('-');
+            message += `📅 *Data de Entrega:* ${day}/${month}/${year}\n\n`;
+            
+            // Adiciona observações se houver
+            if (deliveryComments.trim()) {
+                message += `📝 *Observações:*\n${deliveryComments.trim()}\n\n`;
+            }
+            
             message += `⚠️ *IMPORTANTE:*\n`;
             message += `📌 Sinal de 50%: *R$ ${sinal.toFixed(2)}*\n`;
             message += `📌 Restante na entrega: R$ ${(total - sinal).toFixed(2)}`;
@@ -998,4 +1276,3 @@
     </script>
 </body>
 </html>
-
